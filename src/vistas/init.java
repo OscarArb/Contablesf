@@ -1865,7 +1865,7 @@ public class init extends javax.swing.JFrame {
                     .addComponent(btnAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(panelEmpleado2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(233, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(miNominaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, miNominaLayout.createSequentialGroup()
                     .addContainerGap(317, Short.MAX_VALUE)
@@ -2009,7 +2009,6 @@ public class init extends javax.swing.JFrame {
             }
         });
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Conteo Inicial:");
 
@@ -2170,7 +2169,6 @@ public class init extends javax.swing.JFrame {
                 .addContainerGap(85, Short.MAX_VALUE))
         );
 
-        jLabel29.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel29.setText("Conteo Final:");
 
@@ -2315,7 +2313,7 @@ public class init extends javax.swing.JFrame {
                     .addGroup(panelCierreLayout.createSequentialGroup()
                         .addGap(512, 512, 512)
                         .addComponent(btnIniciar1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         panelCierreLayout.setVerticalGroup(
             panelCierreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2331,7 +2329,6 @@ public class init extends javax.swing.JFrame {
                 .addContainerGap(85, Short.MAX_VALUE))
         );
 
-        jLabel81.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel81.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel81.setText("Recogidas:");
 
@@ -2467,7 +2464,7 @@ public class init extends javax.swing.JFrame {
                         .addComponent(btnIniciar2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(recogidaAregistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         panelRecogidaLayout.setVerticalGroup(
             panelRecogidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2493,7 +2490,6 @@ public class init extends javax.swing.JFrame {
             }
         });
 
-        jLabel94.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel94.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel94.setText("Administracion:");
 
@@ -2626,17 +2622,14 @@ public class init extends javax.swing.JFrame {
         );
 
         jButton28.setBackground(new java.awt.Color(204, 204, 255));
-        jButton28.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton28.setText("Cruces");
         jButton28.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         jButton36.setBackground(new java.awt.Color(204, 204, 255));
-        jButton36.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton36.setText("Bases");
         jButton36.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         jButton38.setBackground(new java.awt.Color(204, 204, 255));
-        jButton38.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton38.setText("Historial Cajero");
         jButton38.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jButton38.addActionListener(new java.awt.event.ActionListener() {
@@ -2646,7 +2639,6 @@ public class init extends javax.swing.JFrame {
         });
 
         jButton39.setBackground(new java.awt.Color(204, 204, 255));
-        jButton39.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jButton39.setText("Usuarios Caja");
         jButton39.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
@@ -2671,7 +2663,7 @@ public class init extends javax.swing.JFrame {
                                 .addComponent(jButton36, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton39, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
         AdministracionLayout.setVerticalGroup(
             AdministracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2717,17 +2709,17 @@ public class init extends javax.swing.JFrame {
                 .addGap(30, 30, 30))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(47, Short.MAX_VALUE)
+                    .addContainerGap(30, Short.MAX_VALUE)
                     .addComponent(panelCierre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(20, 20, 20)))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(57, Short.MAX_VALUE)
+                    .addContainerGap(31, Short.MAX_VALUE)
                     .addComponent(panelRecogida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(47, Short.MAX_VALUE)
+                    .addContainerGap(30, Short.MAX_VALUE)
                     .addComponent(Administracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(20, 20, 20)))
         );
@@ -2742,20 +2734,20 @@ public class init extends javax.swing.JFrame {
                     .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(panelApertura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(240, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(358, Short.MAX_VALUE)
+                    .addContainerGap(134, Short.MAX_VALUE)
                     .addComponent(panelCierre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(10, 10, 10)))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(357, Short.MAX_VALUE)
+                    .addContainerGap(128, Short.MAX_VALUE)
                     .addComponent(panelRecogida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(350, Short.MAX_VALUE)
+                    .addContainerGap(112, Short.MAX_VALUE)
                     .addComponent(Administracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(21, 21, 21)))
         );
@@ -2927,7 +2919,7 @@ public class init extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(buscarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                        .addComponent(buscarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pId, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel74, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pCodigo))
@@ -3710,7 +3702,7 @@ public class init extends javax.swing.JFrame {
         );
         panelClienteLayout.setVerticalGroup(
             panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 455, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
             .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelClienteLayout.createSequentialGroup()
                     .addContainerGap()
@@ -3868,7 +3860,7 @@ public class init extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane6Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, Short.MAX_VALUE)
                     .addComponent(jButton8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(694, 899, Short.MAX_VALUE)
                 .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -5664,13 +5656,11 @@ boolean maximizado= false ;
                 clsBasesAuxiliar resultadoAcion = null;
                 resultadoAcion= ctrBases.Consultar(fecha);
                 if (resultadoAcion != null) {
-                System.out.println(resultadoAcion.getFecha()+resultadoAcion.getBaseInicial());
                 //cuenta filas de la tabla a vaciar
                 int fila=tHCaja.getRowCount();
                 for (int i = fila-1; i>0; i--){
 
                     tabHcaja.removeRow(i);
-
                 }
                 if (tabHcaja.getRowCount()>0){
                     tabHcaja.removeRow(0);
@@ -5710,6 +5700,52 @@ boolean maximizado= false ;
 
                 }
             }else if (Accion.equals("Cierre")){
+                clsBasesAuxiliar resultadoAcion = null;
+                resultadoAcion= ctrBases.Consultar(fecha);
+                if (resultadoAcion != null) {
+                //cuenta filas de la tabla a vaciar
+                int fila=tHCaja.getRowCount();
+                for (int i = fila-1; i>0; i--){
+
+                    tabHcaja.removeRow(i);
+                }
+                if (tabHcaja.getRowCount()>0){
+                    tabHcaja.removeRow(0);
+                }
+
+                String id = resultadoAcion.getId();
+                String fecha = resultadoAcion.getFecha();
+                String hour = resultadoAcion.getHoraApertura();
+                String valor = resultadoAcion.getBaseInicial();
+                String cant = ctrInicio.ListarInventario();
+                String[] filasFecha = fecha.split(",");
+                for (int i = 0; i < filasFecha.length; i++){
+
+                }
+                String[] filasId = id.split(",");
+                for (int i = 0; i < filasId.length; i++){
+
+                }
+                String[] filasHora = hour.split(",");
+                for (int i = 0; i < filasHora.length; i++){
+
+                }
+                String[] filasValor = valor.split(",");
+                for (int i = 0; i < filasValor.length; i++){
+
+                }
+
+                String[] filasAutoriza = cant.split(",");
+                for (int i = 0; i < filasAutoriza.length; i++){
+
+                    tabHcaja.addRow(new Object[]{
+                        filasId[i],"Base",filasFecha[i],filasHora[i],filasValor[i],filasAutoriza[i]
+                    });
+
+
+                }
+
+                }
 
             }else if (Accion.equals("Recogidas")){
 
