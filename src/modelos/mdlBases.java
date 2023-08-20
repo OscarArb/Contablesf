@@ -6,6 +6,7 @@
 package modelos;
 
 import clases.clsBases;
+import clases.clsBasesAuxiliar;
 import clases.clsCliente;
 import clases.clsEmpleado;
 import clases.clsProducto;
@@ -91,18 +92,17 @@ public class mdlBases {
    
     //
     
-    public clsBases  Consultar(String fecha){
+    public clsBasesAuxiliar  Consultar(String fecha){
         String usuario = cacha.usuario();
-        String Lista="";
-        int baseInicial = 0;
-                int  baseCierre = 0;
-                int  cantidadRecogidas = 0;
-                String horaCierre = "";
-                String apertura = "";
-                int id = 0;
-                int usuari = 0;
+        String id="";
+        String baseInicial = "";
+        String  baseCierre = "";
+        String  cantidadRecogidas = "";
+        String horaCierre = "";
+        String apertura = "";
+        String fecha2 = "";
         try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
-            String query ="SELECT `baseinical` FROM `basecajero` WHERE usuario = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
+            String query ="SELECT `id`, `baseinical`,  `cantidadrecojidas`, `horaApertura`,  `fecha` FROM `basecajero` WHERE usuario = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
             //PreparedStatement statementPersona = connection.prepareStatement(query);
             
             //ResultSet resultado = statementPersona.executeQuery();
@@ -110,17 +110,25 @@ public class mdlBases {
             PreparedStatement statementEmpleado = connection.prepareStatement(query);
             ResultSet resultado = statementEmpleado.executeQuery();
             while (resultado.next()){
-                String nombre = resultado.getString(1);
+                String idAuxiliar = resultado.getString(1);
+                String baseAuxiliar=resultado.getString(2);
+                String cantidadAuxiliar=resultado.getString(3);
+                String horaAuxiliar=resultado.getString(4);
+                String fechaAuxiliar=resultado.getString(5);
                 
-        
-                Lista = Lista + nombre +",";
+                id = id + idAuxiliar +",";
+                baseInicial = baseInicial + baseAuxiliar +",";
+                cantidadRecogidas = cantidadRecogidas + cantidadAuxiliar +",";
+                apertura = apertura + horaAuxiliar +",";
+                fecha2 = fecha2 + fechaAuxiliar +",";
+                
                 
                
                
                 
             }
             
-             clsBases datos = new clsBases(id,usuari,baseInicial, baseCierre,cantidadRecogidas,Lista, horaCierre,fecha);
+             clsBasesAuxiliar datos = new clsBasesAuxiliar(id,baseInicial, baseCierre,cantidadRecogidas,apertura, horaCierre,fecha2);
               //  System.out.println("Se encontro el producto"+valorproducto+"  "+detalle+"  "+fechaRegistro);
                 return datos;
         }catch(Exception e){

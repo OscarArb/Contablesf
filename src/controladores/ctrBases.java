@@ -6,6 +6,7 @@
 package controladores;
 
 import clases.clsBases;
+import clases.clsBasesAuxiliar;
 import clases.clsCliente;
 import clases.clsEmpleado;
 import modelos.mdlBases;
@@ -63,7 +64,7 @@ public class ctrBases {
     }
     
    
-     public clsBases Consultar(String fecha){
+     public clsBasesAuxiliar Consultar(String fecha){
         
         try{
             

@@ -6,6 +6,7 @@
 package vistas;
 
 import clases.clsBases;
+import clases.clsBasesAuxiliar;
 import clases.clsCliente;
 import clases.clsEmpleado;
 import clases.clsFactura;
@@ -69,6 +70,7 @@ public class init extends javax.swing.JFrame {
     DefaultTableModel tabCaja =new DefaultTableModel();
     DefaultTableModel tabCierre =new DefaultTableModel();
     DefaultTableModel tabRecogida =new DefaultTableModel();
+    DefaultTableModel tabHcaja = new   DefaultTableModel();
     ctrInicio ctrInicio = new ctrInicio();
     cacha cacha = new cacha();
     ctrEmpleado ctrEmpleado = new ctrEmpleado();
@@ -96,10 +98,13 @@ public class init extends javax.swing.JFrame {
         String[] titulo = new String[]{"Cantidad","Producto","V.Unit","V.Total"};
         String[] titulotabCaja = new String[]{"Denominacion","Cantidad","V.Total"};
         String[] titulotabRecogida = new String[]{"Id","N° Recogida","V.Total","Fecha","Hora"};
+        String[] titulotabHcaja = new String[]{"Id","Accion"," Fecha","Hora","Valor","Autoriza"};
         String[] titulo2 = new String[]{"ID","PRODUCTO","PRECIO","PLU","CANTIDAD"};
         tabCaja.setColumnIdentifiers(titulotabCaja);
         tabCierre.setColumnIdentifiers(titulotabCaja);
         tabRecogida.setColumnIdentifiers(titulotabRecogida);
+        tabHcaja.setColumnIdentifiers(titulotabHcaja);
+        tHCaja.setModel(tabHcaja);
         dtm.setColumnIdentifiers(titulo);
         dtm2.setColumnIdentifiers(titulo2);
         tabla_productos.setModel(dtm);
@@ -593,10 +598,10 @@ public class init extends javax.swing.JFrame {
         jComboAccion = new javax.swing.JComboBox<>();
         jFecha = new javax.swing.JFormattedTextField();
         jButton41 = new javax.swing.JButton();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        tablaHistorialCaja = new javax.swing.JTable();
         jButton42 = new javax.swing.JButton();
         jButton43 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tHCaja = new javax.swing.JTable();
         jButton28 = new javax.swing.JButton();
         jButton36 = new javax.swing.JButton();
         jButton38 = new javax.swing.JButton();
@@ -2527,31 +2532,31 @@ public class init extends javax.swing.JFrame {
             }
         });
 
-        tablaHistorialCaja.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        tablaHistorialCaja.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Id", "Accion", "Fecha", "Hora", "Valor", "Autoriza"
-            }
-        ));
-        jScrollPane7.setViewportView(tablaHistorialCaja);
-
         jButton42.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton42.setText("Delete");
 
         jButton43.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton43.setText("Modificar");
+
+        tHCaja.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        tHCaja.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Denominacion", "Cantidad", "Total"
+            }
+        ));
+        jScrollPane4.setViewportView(tHCaja);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -2589,8 +2594,8 @@ public class init extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(32, 32, 32)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1081, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(24, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1086, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(19, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2615,9 +2620,9 @@ public class init extends javax.swing.JFrame {
                 .addGap(19, 19, 19))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(107, 107, 107)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(66, Short.MAX_VALUE)))
+                    .addGap(90, 90, 90)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(57, Short.MAX_VALUE)))
         );
 
         jButton28.setBackground(new java.awt.Color(204, 204, 255));
@@ -5656,11 +5661,52 @@ boolean maximizado= false ;
             String Accion  = (String) jComboAccion.getSelectedItem();
             if (Accion.equals("Todo")){
             }else if (Accion.equals("Bases")){
-                clsBases resultadoAcion = null;
+                clsBasesAuxiliar resultadoAcion = null;
                 resultadoAcion= ctrBases.Consultar(fecha);
                 if (resultadoAcion != null) {
-                System.out.println(resultadoAcion.getHoraApertura());
-                
+                System.out.println(resultadoAcion.getFecha()+resultadoAcion.getBaseInicial());
+                //cuenta filas de la tabla a vaciar
+                int fila=tHCaja.getRowCount();
+                for (int i = fila-1; i>0; i--){
+
+                    tabHcaja.removeRow(i);
+
+                }
+                if (tabHcaja.getRowCount()>0){
+                    tabHcaja.removeRow(0);
+                }
+
+                String id = resultadoAcion.getId();
+                String fecha = resultadoAcion.getFecha();
+                String hour = resultadoAcion.getHoraApertura();
+                String valor = resultadoAcion.getBaseInicial();
+                String cant = ctrInicio.ListarInventario();
+                String[] filasFecha = fecha.split(",");
+                for (int i = 0; i < filasFecha.length; i++){
+
+                }
+                String[] filasId = id.split(",");
+                for (int i = 0; i < filasId.length; i++){
+
+                }
+                String[] filasHora = hour.split(",");
+                for (int i = 0; i < filasHora.length; i++){
+
+                }
+                String[] filasValor = valor.split(",");
+                for (int i = 0; i < filasValor.length; i++){
+
+                }
+
+                String[] filasAutoriza = cant.split(",");
+                for (int i = 0; i < filasAutoriza.length; i++){
+
+                    tabHcaja.addRow(new Object[]{
+                        filasId[i],"Base",filasFecha[i],filasHora[i],filasValor[i],filasAutoriza[i]
+                    });
+
+
+                }
 
                 }
             }else if (Accion.equals("Cierre")){
@@ -5951,9 +5997,9 @@ boolean maximizado= false ;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane2;
@@ -5998,6 +6044,7 @@ boolean maximizado= false ;
     private javax.swing.JTextField tCierre;
     private javax.swing.JCheckBox tFijo;
     private javax.swing.JCheckBox tFijo1;
+    private javax.swing.JTable tHCaja;
     private javax.swing.JCheckBox tIndef;
     private javax.swing.JCheckBox tIndef1;
     private javax.swing.JCheckBox tPS;
@@ -6005,7 +6052,6 @@ boolean maximizado= false ;
     private javax.swing.JTable tablaCajaApertura;
     private javax.swing.JTable tablaCajaRecogida;
     private javax.swing.JTable tablaCierre;
-    private javax.swing.JTable tablaHistorialCaja;
     private javax.swing.JTable tablaInventario;
     private javax.swing.JTable tabla_productos;
     private javax.swing.JTextField telefonoCliente;
