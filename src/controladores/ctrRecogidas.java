@@ -8,6 +8,7 @@ package controladores;
 import clases.clsBases;
 import clases.clsCliente;
 import clases.clsEmpleado;
+import clases.clsRecogidaAuxiliar;
 import clases.clsRecogidas;
 import modelos.mdlBases;
 import modelos.mdlCliente;
@@ -56,6 +57,19 @@ public class ctrRecogidas {
         return mdlRecogidas.NumeroRecogida();
         
         
+    }
+   public clsRecogidaAuxiliar ConsultarRecogidas(String fecha){
+        
+        try{
+            
+                //Llamado a la capa modelos.Modelo 
+                return mdlRecogidas.ConsultarRecogidas(fecha);
+               
+         }catch(Exception e ){
+            System.out.println("La exepcion es:: "+ e); 
+            return null;
+            
+            }
     }
    
 }

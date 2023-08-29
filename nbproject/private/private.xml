@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Oscar/Documents/NetBeansProjects/Contablesf/src/vistas/init.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/Contablesf/src/modelos/mdlBases.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/Contablesf/src/clases/clsRecogidaAuxiliar.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/Contablesf/src/vistas/init.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/Contablesf/src/controladores/ctrBases.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/Contablesf/src/controladores/ctrRecogidas.java</file>
+            <file>file:/C:/Users/Usuario/Documents/NetBeansProjects/Contablesf/src/modelos/mdlRecogidas.java</file>
         </group>
     </open-files>
 </project-private>

@@ -77,6 +77,19 @@ public class ctrBases {
             
             }
     }
+     public clsBasesAuxiliar ConsultarCierre(String fecha){
+        
+        try{
+            
+                //Llamado a la capa modelos.Modelo
+                return mdlBases.ConsultarCierre(fecha);
+               
+         }catch(Exception e ){
+            System.out.println("La exepcion es:: "+ e); 
+            return null;
+            
+            }
+    }
     public clsCliente Eliminar (String id){
         
         try{

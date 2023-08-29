@@ -9,6 +9,7 @@ import clases.clsBases;
 import clases.clsCliente;
 import clases.clsEmpleado;
 import clases.clsProducto;
+import clases.clsRecogidaAuxiliar;
 import clases.clsRecogidas;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -118,5 +119,46 @@ public class mdlRecogidas {
             System.out.println("La excepcion es: "+ e);
         }
         return VTRecogidas;
+    }
+    
+     public clsRecogidaAuxiliar  ConsultarRecogidas(String fecha){
+        String usuario = cacha.usuario();
+        String id="";
+        String baseInicial = "";
+        String  cantidadRecogidas = "";
+        String apertura = "";
+        String fecha2 = "";
+        try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
+            String query ="SELECT `id`,  `valor`, `numeroRecogida`, `hora`, `fecha` FROM `recogidascaja` WHERE usuarioCajero = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
+            
+            
+            PreparedStatement statementEmpleado = connection.prepareStatement(query);
+            ResultSet resultado = statementEmpleado.executeQuery();
+            while (resultado.next()){
+                String idAuxiliar = resultado.getString(1);
+                String baseAuxiliar=resultado.getString(2);
+                String cantidadAuxiliar=resultado.getString(3);
+                String horaAuxiliar=resultado.getString(4);
+                String fechaAuxiliar=resultado.getString(5);
+                
+                id = id + idAuxiliar +",";
+                baseInicial = baseInicial + baseAuxiliar +",";
+                cantidadRecogidas = cantidadRecogidas + cantidadAuxiliar +",";
+                apertura = apertura + horaAuxiliar +",";
+                fecha2 = fecha2 + fechaAuxiliar +",";
+                
+                
+               
+               
+                
+            }
+            
+             clsRecogidaAuxiliar datos = new clsRecogidaAuxiliar(id,baseInicial,cantidadRecogidas,apertura, fecha2);
+              //  System.out.println("Se encontro el producto"+valorproducto+"  "+detalle+"  "+fechaRegistro);
+                return datos;
+        }catch(Exception e){
+            System.out.println("La excepcion es:!"+ e);
+            return null;
+        }
     }
 }

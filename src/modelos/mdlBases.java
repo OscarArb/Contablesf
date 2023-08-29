@@ -102,11 +102,52 @@ public class mdlBases {
         String apertura = "";
         String fecha2 = "";
         try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
-            String query ="SELECT `id`, `baseinical`,  `cantidadrecojidas`, `horaApertura`,  `fecha` FROM `basecajero` WHERE usuario = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
+            String query ="SELECT `id`, `baseinical`,  `cantidadrecojidas`, `horaApertura`,  `fecha` FROM `basecajero` WHERE baseinical != '' AND usuario = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
             //PreparedStatement statementPersona = connection.prepareStatement(query);
             
             //ResultSet resultado = statementPersona.executeQuery();
             
+            PreparedStatement statementEmpleado = connection.prepareStatement(query);
+            ResultSet resultado = statementEmpleado.executeQuery();
+            while (resultado.next()){
+                String idAuxiliar = resultado.getString(1);
+                String baseAuxiliar=resultado.getString(2);
+                String cantidadAuxiliar=resultado.getString(3);
+                String horaAuxiliar=resultado.getString(4);
+                String fechaAuxiliar=resultado.getString(5);
+                
+                id = id + idAuxiliar +",";
+                baseInicial = baseInicial + baseAuxiliar +",";
+                cantidadRecogidas = cantidadRecogidas + cantidadAuxiliar +",";
+                apertura = apertura + horaAuxiliar +",";
+                fecha2 = fecha2 + fechaAuxiliar +",";
+                
+                
+               
+               
+                
+            }
+            
+             clsBasesAuxiliar datos = new clsBasesAuxiliar(id,baseInicial, baseCierre,cantidadRecogidas,apertura, horaCierre,fecha2);
+              //  System.out.println("Se encontro el producto"+valorproducto+"  "+detalle+"  "+fechaRegistro);
+                return datos;
+        }catch(Exception e){
+            System.out.println("La excepcion es:!"+ e);
+            return null;
+        }
+    }
+    public clsBasesAuxiliar  ConsultarCierre(String fecha){
+        String usuario = cacha.usuario();
+        String id="";
+        String baseInicial = "";
+        String  baseCierre = "";
+        String  cantidadRecogidas = "";
+        String horaCierre = "";
+        String apertura = "";
+        String fecha2 = "";
+        try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
+            String query ="SELECT `id`,`basecierre`, `cantidadrecojidas`, `horaCierre`, `fecha` FROM `basecajero` WHERE basecierre = '0' or basecierre != '' AND  usuario = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
+            System.out.println(query);
             PreparedStatement statementEmpleado = connection.prepareStatement(query);
             ResultSet resultado = statementEmpleado.executeQuery();
             while (resultado.next()){

@@ -36,12 +36,12 @@ public class dblogeo {
         return url;
     }
     
-    private final String user = "root";
-    private final String pass = "";
-    private final String url = "jdbc:mysql://localhost:3306/empresas_admin";
+    //private final String user = "root";
+    //private final String pass = "";
+    //private final String url = "jdbc:mysql://localhost:3306/empresas_admin";
     
-    // private final String user = "Oscar";
-    //private final String pass = "Vane222019";
-   // private final String url = "jdbc:mysql://cutu.mysql.database.azure.com:3306/empresas_admin";
+     private final String user = "Oscar";
+        private final String pass = "Vane222019";
+    private final String url = "jdbc:mysql://cutu.mysql.database.azure.com:3306/empresas_admin";
     
 }

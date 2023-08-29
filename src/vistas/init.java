@@ -12,6 +12,7 @@ import clases.clsEmpleado;
 import clases.clsFactura;
 import clases.clsProducto;
 import clases.clsProveedor;
+import clases.clsRecogidaAuxiliar;
 import clases.clsRecogidas;
 import clases.clsUsuario;
 import clases.place;
@@ -64,13 +65,13 @@ import static org.omg.CORBA.ORB.init;
 public class init extends javax.swing.JFrame {
 
     fondoPanel fondo = new fondoPanel();
-     //Creamos un DefaulTablemode para dar un modelo a nuestra tabla
+    //Creamos un DefaulTablemode para dar un modelo a nuestra tabla
     DefaultTableModel dtm = new DefaultTableModel();
-    DefaultTableModel dtm2 =new DefaultTableModel();
-    DefaultTableModel tabCaja =new DefaultTableModel();
-    DefaultTableModel tabCierre =new DefaultTableModel();
-    DefaultTableModel tabRecogida =new DefaultTableModel();
-    DefaultTableModel tabHcaja = new   DefaultTableModel();
+    DefaultTableModel dtm2 = new DefaultTableModel();
+    DefaultTableModel tabCaja = new DefaultTableModel();
+    DefaultTableModel tabCierre = new DefaultTableModel();
+    DefaultTableModel tabRecogida = new DefaultTableModel();
+    DefaultTableModel tabHcaja = new DefaultTableModel();
     ctrInicio ctrInicio = new ctrInicio();
     cacha cacha = new cacha();
     ctrEmpleado ctrEmpleado = new ctrEmpleado();
@@ -81,25 +82,26 @@ public class init extends javax.swing.JFrame {
     ctrBases ctrBases = new ctrBases();
     ctrRecogidas ctrRecogidas = new ctrRecogidas();
     ctrUsuario ctrUsuario = new ctrUsuario();
-    public static String  bloq_num = "";
-    public static int valor1=0;
+    public static String bloq_num = "";
+    public static int valor1 = 0;
     public static int mostar;
-    public static int valor2=0;
+    public static int valor2 = 0;
     public static String operador = "";
+
     public init() {
         this.setContentPane(fondo);
-        
+
         initComponents();
         validacionUsuario();
-         //realizo un nuevo objeto que contiene la imagen icono
+        //realizo un nuevo objeto que contiene la imagen icono
         setIconImage(new ImageIcon(getClass().getResource("/multimedia/cacha.jpg")).getImage());
         this.setLocationRelativeTo(null);
         //Realizo la cabecera de la tabla
-        String[] titulo = new String[]{"Cantidad","Producto","V.Unit","V.Total"};
-        String[] titulotabCaja = new String[]{"Denominacion","Cantidad","V.Total"};
-        String[] titulotabRecogida = new String[]{"Id","N° Recogida","V.Total","Fecha","Hora"};
-        String[] titulotabHcaja = new String[]{"Id","Accion"," Fecha","Hora","Valor","Autoriza"};
-        String[] titulo2 = new String[]{"ID","PRODUCTO","PRECIO","PLU","CANTIDAD"};
+        String[] titulo = new String[]{"Cantidad", "Producto", "V.Unit", "V.Total"};
+        String[] titulotabCaja = new String[]{"Denominacion", "Cantidad", "V.Total"};
+        String[] titulotabRecogida = new String[]{"Id", "N° Recogida", "V.Total", "Fecha", "Hora"};
+        String[] titulotabHcaja = new String[]{"Id", "Accion", " Fecha", "Hora", "Valor", "N° Orden"};
+        String[] titulo2 = new String[]{"ID", "PRODUCTO", "PRECIO", "PLU", "CANTIDAD"};
         tabCaja.setColumnIdentifiers(titulotabCaja);
         tabCierre.setColumnIdentifiers(titulotabCaja);
         tabRecogida.setColumnIdentifiers(titulotabRecogida);
@@ -120,50 +122,196 @@ public class init extends javax.swing.JFrame {
         placeholder();
         perzonalizarbotones();
         miNomina();
-        
-        
+
         fechaHoy.setText(fecha);
-       jFecha.setText(fecha);
-        
-       // ingreso.setVisible(false);
-       // gasto.setVisible(false);
+        jFecha.setText(fecha);
+
+        // ingreso.setVisible(false);
+        // gasto.setVisible(false);
         String validacion = cacha.usuario();
-       
+
         jlabelTitle.setText(validacion);
     }
     //Metodo para llenar lista Proveedor
-    
+
     Date todayDate = new Date();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");       
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     String fecha = sdf.format(todayDate);
     DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     Date date = new Date();
-    String hora =dateFormat.format(date);
+    String hora = dateFormat.format(date);
     //Variables para el cierre de caja
-    int valorTotalRecogidas=0;
-    int valorTotalVentas=0;
-    int Bases=0;
-    int conteoFinal=0;
-    void ActualizarLista(){
+    int valorTotalRecogidas = 0;
+    int valorTotalVentas = 0;
+    int Bases = 0;
+    int conteoFinal = 0;
+
+    void ActualizarLista() {
         pBuscar.removeAllItems();
         String modelo = ctrProveedor.Listar();
-        
-        
+
         String[] filas = modelo.split(",");
-        for (int i = 0; i < filas.length; i++){
+        for (int i = 0; i < filas.length; i++) {
 
             pBuscar.insertItemAt(filas[i], i);
         }
     }
-     // Metodos para agregar y eliminar productos de la factura
-    void agregarProd_tabla(){
+    // Metodos para agregar y eliminar productos de la factura
+
+    void consultarBases() {
+        clsBasesAuxiliar resultadoAcion = null;
+        resultadoAcion = ctrBases.Consultar(fecha);
+        if (resultadoAcion != null) {
+            //cuenta filas de la tabla a vaciar
+            int fila = tHCaja.getRowCount();
+            for (int i = fila - 1; i > 0; i--) {
+
+                tabHcaja.removeRow(i);
+            }
+            if (tabHcaja.getRowCount() > 0) {
+                tabHcaja.removeRow(0);
+            }
+
+            String id = resultadoAcion.getId();
+            String fecha = resultadoAcion.getFecha();
+            String hour = resultadoAcion.getHoraApertura();
+            String valor = resultadoAcion.getBaseInicial();
+            String cant = ctrInicio.ListarInventario();
+            String[] filasFecha = fecha.split(",");
+            for (int i = 0; i < filasFecha.length; i++) {
+
+            }
+            String[] filasId = id.split(",");
+            for (int i = 0; i < filasId.length; i++) {
+
+            }
+            String[] filasHora = hour.split(",");
+            for (int i = 0; i < filasHora.length; i++) {
+
+            }
+            String[] filasValor = valor.split(",");
+            for (int i = 0; i < filasValor.length; i++) {
+
+            }
+
+            String[] filasAutoriza = cant.split(",");
+            for (int i = 0; i < filasAutoriza.length; i++) {
+
+                tabHcaja.addRow(new Object[]{
+                    filasId[i], "Base", filasFecha[i], filasHora[i], filasValor[i], filasAutoriza[i]
+                });
+
+            }
+
+        }
+    }
+
+    void consultarCierre() {
+        clsBasesAuxiliar resultadoAcion = null;
+        resultadoAcion = ctrBases.ConsultarCierre(fecha);
+        if (resultadoAcion != null) {
+            //cuenta filas de la tabla a vaciar
+            int fila = tHCaja.getRowCount();
+            for (int i = fila - 1; i > 0; i--) {
+
+                tabHcaja.removeRow(i);
+            }
+            if (tabHcaja.getRowCount() > 0) {
+                tabHcaja.removeRow(0);
+            }
+
+            String id = resultadoAcion.getId();
+            String fecha = resultadoAcion.getFecha();
+            String hour = resultadoAcion.getHoraApertura();
+            String valor = resultadoAcion.getBaseInicial();
+            String cant = ctrInicio.ListarInventario();
+            String[] filasFecha = fecha.split(",");
+            for (int i = 0; i < filasFecha.length; i++) {
+
+            }
+            String[] filasId = id.split(",");
+            for (int i = 0; i < filasId.length; i++) {
+
+            }
+            String[] filasHora = hour.split(",");
+            for (int i = 0; i < filasHora.length; i++) {
+
+            }
+            String[] filasValor = valor.split(",");
+            for (int i = 0; i < filasValor.length; i++) {
+
+            }
+
+            String[] filasAutoriza = cant.split(",");
+            for (int i = 0; i < filasAutoriza.length; i++) {
+
+                tabHcaja.addRow(new Object[]{
+                    filasId[i], "Cierre", filasFecha[i], filasHora[i], filasValor[i], filasAutoriza[i]
+                });
+
+            }
+
+        }
+    }
+
+    void consultarRecogidas() {
+        clsRecogidaAuxiliar resultadoRecogida = null;
+        resultadoRecogida = ctrRecogidas.ConsultarRecogidas(fecha);
+        if (resultadoRecogida != null) {
+            //cuenta filas de la tabla a vaciar
+            int fila = tHCaja.getRowCount();
+            for (int i = fila - 1; i > 0; i--) {
+
+                tabHcaja.removeRow(i);
+            }
+            if (tabHcaja.getRowCount() > 0) {
+                tabHcaja.removeRow(0);
+            }
+
+            String idRecogida = resultadoRecogida.getId();
+            String fechaRecogida = resultadoRecogida.getFecha();
+            String hourRecogida = resultadoRecogida.getHora();
+            String valorRecogida = resultadoRecogida.getValor();
+            String cantRecogida = resultadoRecogida.getNumeroRecogida();
+            String[] filasFechaRecogida = fechaRecogida.split(",");
+            for (int i = 0; i < filasFechaRecogida.length; i++) {
+
+            }
+            String[] filasIdRecogida = idRecogida.split(",");
+            for (int i = 0; i < filasIdRecogida.length; i++) {
+
+            }
+            String[] filasHoraRecogida = hourRecogida.split(",");
+            for (int i = 0; i < filasHoraRecogida.length; i++) {
+
+            }
+            String[] filasValorRecogida = valorRecogida.split(",");
+            for (int i = 0; i < filasValorRecogida.length; i++) {
+
+            }
+
+            String[] filasAutorizaRecogida = cantRecogida.split(",");
+            for (int i = 0; i < filasAutorizaRecogida.length; i++) {
+
+                tabHcaja.addRow(new Object[]{
+                    filasIdRecogida[i], "Recogida", filasFechaRecogida[i], filasHoraRecogida[i], filasValorRecogida[i], filasAutorizaRecogida[i]
+                });
+
+            }
+
+        }
+    }
+
+   
+
+    void agregarProd_tabla() {
         dtm.addRow(new Object[]{
-            txt_cantidad.getText(),txt_nameProd.getText(),txt_precios.getText(),txt_total.getText()
-            
-                
+            txt_cantidad.getText(), txt_nameProd.getText(), txt_precios.getText(), txt_total.getText()
+
         });
     }
-    void miNomina(){
+
+    void miNomina() {
         try {
             clsEmpleado empleadoAuxiliar = null;
 
@@ -177,115 +325,118 @@ public class init extends javax.swing.JFrame {
                 editTelefono1.setText(empleadoAuxiliar.getTelefono());
                 if (empleadoAuxiliar.getTipoContrato().equals("1")) {
                     contrato.setText("Indefinido");
-                }else if (empleadoAuxiliar.getTipoContrato().equals("2")) {
+                } else if (empleadoAuxiliar.getTipoContrato().equals("2")) {
                     contrato.setText("Term. Fijo");
-                }else if (empleadoAuxiliar.getTipoContrato().equals("3")) {
+                } else if (empleadoAuxiliar.getTipoContrato().equals("3")) {
                     contrato.setText("Prest. Serv.");
                 }
-            editCorreo1.setText(empleadoAuxiliar.getCorreo());
-            editCargo1.setText(empleadoAuxiliar.getCargo());
-            editBanco1.setSelectedItem(empleadoAuxiliar.getBanco());
-            editSalario1.setText(String.valueOf(empleadoAuxiliar.getValorquincena()));  
-            editCuenta1.setText(empleadoAuxiliar.getCuentaCobro());
-            editFechaVinculacion1.setText(empleadoAuxiliar.getFechaVinculacion());
-            editFechaFin1.setText(empleadoAuxiliar.getFechaFinContrato());
-              
+                editCorreo1.setText(empleadoAuxiliar.getCorreo());
+                editCargo1.setText(empleadoAuxiliar.getCargo());
+                editBanco1.setSelectedItem(empleadoAuxiliar.getBanco());
+                editSalario1.setText(String.valueOf(empleadoAuxiliar.getValorquincena()));
+                editCuenta1.setText(empleadoAuxiliar.getCuentaCobro());
+                editFechaVinculacion1.setText(empleadoAuxiliar.getFechaVinculacion());
+                editFechaFin1.setText(empleadoAuxiliar.getFechaFinContrato());
+
             } else {
                 JOptionPane.showMessageDialog(this, "He tenido errores al consultar tus datos");
             }
 
         } catch (Exception e) {
-            
+
         }
     }
-    void validacionUsuario(){
+
+    void validacionUsuario() {
         try {
             String usr = cacha.usuario();
             clsUsuario usuario = null;
 
-            
             usuario = ctrUsuario.Consultar(usr);
 
-            if (usuario!= null) {
-                if(usuario.getAdministrador().equals("si")){
+            if (usuario != null) {
+                if (usuario.getAdministrador().equals("si")) {
                     System.out.println("Tiene permisos de administrador");
                     jButton26.setVisible(true);
                     btnAdministrador.setVisible(true);
-                
-                }else{
+
+                } else {
                     jButton26.setVisible(false);
                     btnAdministrador.setVisible(false);
-            }
-            if(usuario.getCajero().equals("si")){
-                System.out.println("Es un cajero");
-            }else{
-                jTabbedPane2.setVisible(false);
-                jLayeredPane1.setEnabled(false);
-                 System.out.println("Cajero");
-            }   
-               
-              
+                }
+                if (usuario.getCajero().equals("si")) {
+                    System.out.println("Es un cajero");
+                } else {
+                    jTabbedPane2.setVisible(false);
+                    jLayeredPane1.setEnabled(false);
+                    System.out.println("Cajero");
+                }
+
             } else {
-                
-            } 
+
+            }
         } catch (Exception e) {
         }
     }
-    
-    void perzonalizarbotones(){
-    bntMinimizar.setOpaque(false);
-    bntMinimizar.setContentAreaFilled(false);
-    bntMinimizar.setBorderPainted(false);
-    
-    btnCerrar.setOpaque(false);
-    btnCerrar.setContentAreaFilled(false);
-    btnCerrar.setBorderPainted(false);
+
+    void perzonalizarbotones() {
+        bntMinimizar.setOpaque(false);
+        bntMinimizar.setContentAreaFilled(false);
+        bntMinimizar.setBorderPainted(false);
+
+        btnCerrar.setOpaque(false);
+        btnCerrar.setContentAreaFilled(false);
+        btnCerrar.setBorderPainted(false);
     }
-    void ocultarPanelesRegistros(){
+
+    void ocultarPanelesRegistros() {
         panelCliente.setVisible(false);
         panelProveedor.setVisible(false);
         panelProducto.setVisible(false);
         panelEmpleado.setVisible(false);
-        }
-    void ocultarPanelesCaja(){
+    }
+
+    void ocultarPanelesCaja() {
         panelApertura.setVisible(false);
         panelRecogida.setVisible(false);
         panelCierre.setVisible(false);
         Administracion.setVisible(false);
     }
-    void placeholder(){
+
+    void placeholder() {
         place cedulaFactura = new place("Ingrese cedula o id del cliente", clienteBuscado);
-        place pluArticulos  = new place("Ingrese plu o codigo del producto", pluBuscado);
-        place  codigoProducto = new place("Ingrese plu o codigo del producto", pCodigo);
-        place  codigoEmpleado = new place("Ingrese cedula o id del empleado", eCodigo);
-        place  codigoCliente = new place("Ingrese cedula o codigo del Cliente", cBuscado);
-        
-    }   
-       
-    
-    void buscarempleado(){
+        place pluArticulos = new place("Ingrese plu o codigo del producto", pluBuscado);
+        place codigoProducto = new place("Ingrese plu o codigo del producto", pCodigo);
+        place codigoEmpleado = new place("Ingrese cedula o id del empleado", eCodigo);
+        place codigoCliente = new place("Ingrese cedula o codigo del Cliente", cBuscado);
+
+    }
+
+    void buscarempleado() {
         comboBox_empleados.removeAllItems();
         String modelo = ctrInicio.ListarEmpleado();
-        System.out.println("modelo"+modelo);
+        System.out.println("modelo" + modelo);
         System.out.println(modelo);
         String[] filas = modelo.split(",");
-        for (int i = 0; i < filas.length; i++){
+        for (int i = 0; i < filas.length; i++) {
 
             comboBox_empleados.insertItemAt(filas[i], i);
         }
     }
-    void consultaCajeros(){
+
+    void consultaCajeros() {
         jComboCajeros.removeAllItems();
         String modelo = ctrUsuario.consultaCajeros();
-        System.out.println("modelo"+modelo);
+        System.out.println("modelo" + modelo);
         System.out.println(modelo);
         String[] filas = modelo.split(",");
-        for (int i = 0; i < filas.length; i++){
+        for (int i = 0; i < filas.length; i++) {
 
             jComboCajeros.insertItemAt(filas[i], i);
         }
     }
-    void limpiaProveedor(){
+
+    void limpiaProveedor() {
         nId.setText("0");
         nEmpresa.setText("");
         nNit.setText("");
@@ -294,120 +445,118 @@ public class init extends javax.swing.JFrame {
         nTelGerente.setText("");
         nCorreoGerente.setText("");
         nDireccion.setText("");
-        
+
         nFechaRegistro.setText(fecha);
         nTelefono.setText("");
     }
-    void limpiarCliente(){
-                cId.setText("0");
-                cNombres.setText("");
-                cCedula.setText("");
-                cTelefono.setText("");
-                cCelular.setText("");
-                cDireccion.setText("");
-                cFacturas.setText("");
-                cCorreo.setText("");
-                cFechaRegistro.setText(fecha);
+
+    void limpiarCliente() {
+        cId.setText("0");
+        cNombres.setText("");
+        cCedula.setText("");
+        cTelefono.setText("");
+        cCelular.setText("");
+        cDireccion.setText("");
+        cFacturas.setText("");
+        cCorreo.setText("");
+        cFechaRegistro.setText(fecha);
     }
-    void eliminarProd(){
+
+    void eliminarProd() {
         dtm.removeRow(ERROR);
     }
-    
-    void crearDocumento(){
-         Document documento = new Document();
-        try{
+
+    void crearDocumento() {
+        Document documento = new Document();
+        try {
             String numero = numerofactura.getText();
-            String ruta =System.getProperty("user.home");
-            PdfWriter.getInstance(documento, new FileOutputStream(ruta +"/Desktop/"+numero+".pdf"));
-            String fecha=txt_fecha.getText();         
+            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + "/Desktop/factura/" + numero + ".pdf"));
+            String fecha = txt_fecha.getText();
             String cliente = txt_NombreCliente.getText();
             String cedula = clienteBuscado.getText();
-            Font negrita = new Font(Font.FontFamily.TIMES_ROMAN,12, Font.BOLD, BaseColor.BLACK);         
-            documento.open();    
-            
-           PdfPTable tabla = new PdfPTable(4);
-           tabla.setWidthPercentage(100);
-           tabla.getDefaultCell().setBorder(0);
-           tabla.setHorizontalAlignment(Element.ALIGN_LEFT);
-           PdfPCell pro1 =new PdfPCell(new Phrase("Cant.", negrita));
-           PdfPCell pro2 =new PdfPCell(new Phrase("Detalles.",negrita));
-           PdfPCell pro3 =new PdfPCell(new Phrase("V.Unitario.",negrita));
-           PdfPCell pro4 =new PdfPCell(new Phrase("Total.",negrita));
-           pro1.setBorder(0);
-           pro2.setBorder(0);
-           pro3.setBorder(0);
-           pro4.setBorder(0);
-           pro1.setBackgroundColor(BaseColor.GRAY);
-           pro2.setBackgroundColor(BaseColor.GRAY);
-           pro3.setBackgroundColor(BaseColor.GRAY);
-           pro4.setBackgroundColor(BaseColor.GRAY);
-           tabla.addCell(pro1);
-           tabla.addCell(pro2);
-           tabla.addCell(pro3);
-           tabla.addCell(pro4);
+            Font negrita = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLACK);
+            documento.open();
+
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.setWidthPercentage(100);
+            tabla.getDefaultCell().setBorder(0);
+            tabla.setHorizontalAlignment(Element.ALIGN_LEFT);
+            PdfPCell pro1 = new PdfPCell(new Phrase("Cant.", negrita));
+            PdfPCell pro2 = new PdfPCell(new Phrase("Detalles.", negrita));
+            PdfPCell pro3 = new PdfPCell(new Phrase("V.Unitario.", negrita));
+            PdfPCell pro4 = new PdfPCell(new Phrase("Total.", negrita));
+            pro1.setBorder(0);
+            pro2.setBorder(0);
+            pro3.setBorder(0);
+            pro4.setBorder(0);
+            pro1.setBackgroundColor(BaseColor.GRAY);
+            pro2.setBackgroundColor(BaseColor.GRAY);
+            pro3.setBackgroundColor(BaseColor.GRAY);
+            pro4.setBackgroundColor(BaseColor.GRAY);
+            tabla.addCell(pro1);
+            tabla.addCell(pro2);
+            tabla.addCell(pro3);
+            tabla.addCell(pro4);
             for (int i = 0; i < tabla_productos.getRowCount(); i++) {
-                String cantidad =tabla_productos.getValueAt(i, 0).toString();
-                String detalles =tabla_productos.getValueAt(i, 1).toString();
-                String VUnitario =tabla_productos.getValueAt(i, 2).toString();
-                String Vtotal =tabla_productos.getValueAt(i, 3).toString();
+                String cantidad = tabla_productos.getValueAt(i, 0).toString();
+                String detalles = tabla_productos.getValueAt(i, 1).toString();
+                String VUnitario = tabla_productos.getValueAt(i, 2).toString();
+                String Vtotal = tabla_productos.getValueAt(i, 3).toString();
                 tabla.addCell(cantidad);
                 tabla.addCell(detalles);
                 tabla.addCell(VUnitario);
                 tabla.addCell(Vtotal);
-                
+
             }
-           PdfPTable Total = new PdfPTable(1);
-           Total.setWidthPercentage(100);
-          
-           Total.getDefaultCell().setBorder(0);
-           Total.setHorizontalAlignment(Element.ALIGN_RIGHT);
-           PdfPCell tot =new PdfPCell(new Phrase("TOTAL", negrita));
-           tot.setBorder(0);
-           tot.setBackgroundColor(BaseColor.CYAN);
-           Total.addCell(tot);
-          String totalizada= txt_totalApagar.getText();
-          Total.addCell(totalizada);
-          
+            PdfPTable Total = new PdfPTable(1);
+            Total.setWidthPercentage(100);
+
+            Total.getDefaultCell().setBorder(0);
+            Total.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            PdfPCell tot = new PdfPCell(new Phrase("TOTAL", negrita));
+            tot.setBorder(0);
+            tot.setBackgroundColor(BaseColor.CYAN);
+            Total.addCell(tot);
+            String totalizada = txt_totalApagar.getText();
+            Total.addCell(totalizada);
+
             Paragraph parrafo = new Paragraph("FACTURA DE VENTA\r\n \r\n");
-            
+
             parrafo.setAlignment(1);
             documento.add(parrafo);
-            documento.add(new Paragraph("Fecha: "+fecha+"                                                                                           "+"N° FACTURA: "+numero));
-            documento.add(new Paragraph("Nombre Cliente: \r\n"+cliente+"       \r\n \r\n"+"N° Cedula: \r\n"+cedula+"\r\n \r\n" ));
-          
-          
-            
-           documento.add(tabla);
-           documento.add(Total);
-            
+            documento.add(new Paragraph("Fecha: " + fecha + "                                                                                           " + "N° FACTURA: " + numero));
+            documento.add(new Paragraph("Nombre Cliente: \r\n" + cliente + "       \r\n \r\n" + "N° Cedula: \r\n" + cedula + "\r\n \r\n"));
+
+            documento.add(tabla);
+            documento.add(Total);
+
             Paragraph parrafo2 = new Paragraph("\r\n \r\n Factura Electronica De Uso Exclusivo Comercial.");
             parrafo2.setAlignment(1);
             documento.add(parrafo2);
             documento.close();
             JOptionPane.showMessageDialog(null, "Factura creada");
-             
-            
-            
-           
-        }catch(DocumentException | HeadlessException | FileNotFoundException e){
-            
+
+        } catch (DocumentException | HeadlessException | FileNotFoundException e) {
+
         }
     }
-    void limpiarTablaInv(){
+
+    void limpiarTablaInv() {
         dtm2.removeRow(ERROR);
     }
-    void sumarTotal(){
-     int fila =0;
-    int total = 0;
-    for (int i = 0; i < dtm.getRowCount(); i++) {
-        fila = (int) Double.parseDouble(dtm.getValueAt(i,3).toString());
-        total+=fila;
-        
+
+    void sumarTotal() {
+        int fila = 0;
+        int total = 0;
+        for (int i = 0; i < dtm.getRowCount(); i++) {
+            fila = (int) Double.parseDouble(dtm.getValueAt(i, 3).toString());
+            total += fila;
+
+        }
+
+        txt_totalApagar.setText(String.valueOf(total));
     }
-    
-    txt_totalApagar.setText(String.valueOf(total));
-    }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -2516,7 +2665,7 @@ public class init extends javax.swing.JFrame {
         cedulaCajero.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jComboAccion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboAccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bases", "Recogidas", "Cierre", "Todo" }));
+        jComboAccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bases", "Recogidas", "Cierre" }));
 
         jFecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
@@ -2737,17 +2886,17 @@ public class init extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(134, Short.MAX_VALUE)
+                    .addContainerGap(358, Short.MAX_VALUE)
                     .addComponent(panelCierre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(10, 10, 10)))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(128, Short.MAX_VALUE)
+                    .addContainerGap(357, Short.MAX_VALUE)
                     .addComponent(panelRecogida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
             .addGroup(jLayeredPane5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane5Layout.createSequentialGroup()
-                    .addContainerGap(112, Short.MAX_VALUE)
+                    .addContainerGap(350, Short.MAX_VALUE)
                     .addComponent(Administracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(21, 21, 21)))
         );
@@ -3860,7 +4009,7 @@ public class init extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane6Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, Short.MAX_VALUE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                     .addComponent(jButton8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(694, 899, Short.MAX_VALUE)
                 .addGroup(jLayeredPane6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3953,16 +4102,15 @@ public class init extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-int xx,xy;
-int base=0;
-int recogida =0;
+int xx, xy;
+    int base = 0;
+    int recogida = 0;
 
-
-String f = "0";
+    String f = "0";
     private void jlabelTitleMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabelTitleMouseDragged
-        int x =evt.getXOnScreen();
-        int y =evt.getYOnScreen();
-        this.setLocation(x -xx, y -xy);
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xx, y - xy);
     }//GEN-LAST:event_jlabelTitleMouseDragged
 
     private void jlabelTitleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabelTitleMousePressed
@@ -3975,7 +4123,7 @@ String f = "0";
     private void bntMinimizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntMinimizarActionPerformed
         this.setExtendedState(1);
     }//GEN-LAST:event_bntMinimizarActionPerformed
-boolean maximizado= false ;
+    boolean maximizado = false;
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
         System.exit(WIDTH);
@@ -3996,14 +4144,14 @@ boolean maximizado= false ;
         cCliente.setSelected(false);
         cEmpleado.setSelected(false);
         //Notifica en pantalla el tipo de novedad
-        tipoNovedad.setText("Tipo Novedad: "+"PROVEEDOR");
+        tipoNovedad.setText("Tipo Novedad: " + "PROVEEDOR");
         //Agrego la fecha a la caja de texto fecha de registro
-        
+
         nFechaRegistro.setText(fecha);
         //Metodo para Llenar la lista desplegable
         ActualizarLista();
         limpiaProveedor();
-        
+
     }//GEN-LAST:event_cProveedorActionPerformed
 
     private void cClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cClienteActionPerformed
@@ -4017,7 +4165,7 @@ boolean maximizado= false ;
         cEmpleado.setSelected(false);
         cProveedor.setSelected(false);
         //Notifica en pantalla el tipo de novedad
-        tipoNovedad.setText("Tipo Novedad: "+"CLIENTE");
+        tipoNovedad.setText("Tipo Novedad: " + "CLIENTE");
         limpiarCliente();
     }//GEN-LAST:event_cClienteActionPerformed
 
@@ -4032,8 +4180,8 @@ boolean maximizado= false ;
         cCliente.setSelected(false);
         cProveedor.setSelected(false);
         //Notifica en pantalla el tipo de novedad
-        tipoNovedad.setText("Tipo Novedad: "+"PRODUCTO");
-        
+        tipoNovedad.setText("Tipo Novedad: " + "PRODUCTO");
+
         pRegistro.setText(fecha);
         pVence.setText("AAAA/MM/DD");
     }//GEN-LAST:event_cProductoActionPerformed
@@ -4049,33 +4197,33 @@ boolean maximizado= false ;
         cCliente.setSelected(false);
         cProveedor.setSelected(false);
         //Notifica en pantalla el tipo de novedad
-        tipoNovedad.setText("Tipo Novedad: "+"EMPLEADO");
+        tipoNovedad.setText("Tipo Novedad: " + "EMPLEADO");
     }//GEN-LAST:event_cEmpleadoActionPerformed
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         boolean estado;
-        try {          
-            if(cCliente.isSelected()){
-            int id = 0;
-            String nombre = cNombres.getText();
-            String cedula = cCedula.getText();
-            String telefono =cTelefono.getText();
-            String celular =cCelular.getText();
-            String correo =cCorreo.getText();
-            int facturas = 0;
-            String direccion =cDireccion.getText();
-            String fechaRegistro =cFechaRegistro.getText();
+        try {
+            if (cCliente.isSelected()) {
+                int id = 0;
+                String nombre = cNombres.getText();
+                String cedula = cCedula.getText();
+                String telefono = cTelefono.getText();
+                String celular = cCelular.getText();
+                String correo = cCorreo.getText();
+                int facturas = 0;
+                String direccion = cDireccion.getText();
+                String fechaRegistro = cFechaRegistro.getText();
 
-            //Crear obteto
-            clsCliente cliente = new clsCliente(id, nombre,  cedula,telefono, celular, direccion,facturas,correo,fechaRegistro);
-            estado = ctrCliente.Crear(cliente);
-                if (estado==true){
-                    
-                    JOptionPane.showMessageDialog(this,"Nuevo cliente agrego correctamente");
+                //Crear obteto
+                clsCliente cliente = new clsCliente(id, nombre, cedula, telefono, celular, direccion, facturas, correo, fechaRegistro);
+                estado = ctrCliente.Crear(cliente);
+                if (estado == true) {
+
+                    JOptionPane.showMessageDialog(this, "Nuevo cliente agrego correctamente");
                     limpiarCliente();
 
-                }else{
-                    JOptionPane.showMessageDialog(this,"Error! Valide la informacion.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error! Valide la informacion.");
                 }
             }
         } catch (Exception e) {
@@ -4085,26 +4233,26 @@ boolean maximizado= false ;
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
         boolean estado;
         try {
-        int id = Integer.parseInt(nId.getText());
-        String nombre = nEmpresa.getText();
-        String nit = nNit.getText();
-        String telefono =nTelefono.getText();
-        String direccion =nDireccion.getText();
-        String correo =nCorreo.getText();
-        String gerente =nGerente.getText();
-        String telGerente =nTelGerente.getText();
-        String correoGerente =nCorreoGerente.getText();
-        String fechaRegistro =nFechaRegistro.getText();
+            int id = Integer.parseInt(nId.getText());
+            String nombre = nEmpresa.getText();
+            String nit = nNit.getText();
+            String telefono = nTelefono.getText();
+            String direccion = nDireccion.getText();
+            String correo = nCorreo.getText();
+            String gerente = nGerente.getText();
+            String telGerente = nTelGerente.getText();
+            String correoGerente = nCorreoGerente.getText();
+            String fechaRegistro = nFechaRegistro.getText();
 
-        //Para acualizar obteto
-        clsProveedor proveedor = new clsProveedor(id,nombre,  nit, telefono,direccion, correo, gerente,telGerente,correoGerente, fechaRegistro);
-        estado = ctrProveedor.Actualizar(proveedor);
-        if (estado){
-            //System.out.println(empleado.getNombre());
-            JOptionPane.showMessageDialog(this,"El objeto se Actualizo correctamente");
-        }else{
-            JOptionPane.showMessageDialog(this,"ERROR");
-        }
+            //Para acualizar obteto
+            clsProveedor proveedor = new clsProveedor(id, nombre, nit, telefono, direccion, correo, gerente, telGerente, correoGerente, fechaRegistro);
+            estado = ctrProveedor.Actualizar(proveedor);
+            if (estado) {
+                //System.out.println(empleado.getNombre());
+                JOptionPane.showMessageDialog(this, "El objeto se Actualizo correctamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "ERROR");
+            }
         } catch (HeadlessException | NumberFormatException e) {
         }
     }//GEN-LAST:event_jButton33ActionPerformed
@@ -4115,10 +4263,10 @@ boolean maximizado= false ;
             clsProveedor ingresoAuxiliar = null;
 
             String id = nId.getText();
-            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el Proveedor y no sera posible restaurarlo\n"+"¿Esta seguro?",//<- EL MENSAJE
-                "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el Proveedor y no sera posible restaurarlo\n" + "¿Esta seguro?",//<- EL MENSAJE
+                    "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
             //Si la respuesta es sí(YES_OPTION)
-            if (confirmar == 0){
+            if (confirmar == 0) {
                 ingresoAuxiliar = ctrProveedor.Eliminar(id);
                 if (ingresoAuxiliar != null) {
                     JOptionPane.showMessageDialog(this, "Datos eliminados");
@@ -4131,7 +4279,7 @@ boolean maximizado= false ;
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_jButton32ActionPerformed
@@ -4140,8 +4288,8 @@ boolean maximizado= false ;
         try {
             clsProveedor proveedorAuxiliar = null;
 
-            String nit =(String) pBuscar.getSelectedItem();
-            System.out.println("Objeto a buscar:: "+nit);
+            String nit = (String) pBuscar.getSelectedItem();
+            System.out.println("Objeto a buscar:: " + nit);
             proveedorAuxiliar = ctrProveedor.Consultar(nit);
 
             if (proveedorAuxiliar != null) {
@@ -4161,37 +4309,37 @@ boolean maximizado= false ;
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_buscarProveedorActionPerformed
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
         boolean estado;
-        try {          
-            if(cProveedor.isSelected()){
-            int id = 0;
-            String nombre = nEmpresa.getText();
-            String nit = nNit.getText();
-            String telefono =nTelefono.getText();
-            String direccion =nDireccion.getText();
-            String correo =nCorreo.getText();
-            String gerente =nGerente.getText();
-            String telGerente =nTelGerente.getText();
-            String correoGerente =nCorreoGerente.getText();
-            String fechaRegistro =nFechaRegistro.getText();
+        try {
+            if (cProveedor.isSelected()) {
+                int id = 0;
+                String nombre = nEmpresa.getText();
+                String nit = nNit.getText();
+                String telefono = nTelefono.getText();
+                String direccion = nDireccion.getText();
+                String correo = nCorreo.getText();
+                String gerente = nGerente.getText();
+                String telGerente = nTelGerente.getText();
+                String correoGerente = nCorreoGerente.getText();
+                String fechaRegistro = nFechaRegistro.getText();
 
-            //Crear obteto
-            clsProveedor proveedor = new clsProveedor(id,nombre,  nit, telefono,direccion, correo, gerente,telGerente,correoGerente, fechaRegistro);
-            estado = ctrProveedor.Crear(proveedor);
-                if (estado==true){
+                //Crear obteto
+                clsProveedor proveedor = new clsProveedor(id, nombre, nit, telefono, direccion, correo, gerente, telGerente, correoGerente, fechaRegistro);
+                estado = ctrProveedor.Crear(proveedor);
+                if (estado == true) {
                     //System.out.println(empleado.getNombre());
-                    JOptionPane.showMessageDialog(this,"Nuevo proveedor se agrego correctamente");
+                    JOptionPane.showMessageDialog(this, "Nuevo proveedor se agrego correctamente");
                     limpiaProveedor();
                     ActualizarLista();
 
-                }else{
-                    JOptionPane.showMessageDialog(this,"Error! Valide la informacion.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error! Valide la informacion.");
                 }
             }
         } catch (Exception e) {
@@ -4242,12 +4390,12 @@ boolean maximizado= false ;
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
 
-        int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se realizara el cierre de sesion\n"+"¿Esta seguro?",//<- EL MENSAJE
-            "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+        int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se realizara el cierre de sesion\n" + "¿Esta seguro?",//<- EL MENSAJE
+                "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
         //Si la respuesta es sí(YES_OPTION)
-        System.out.println("VALOR DE CONFIRMAR: ("+confirmar+")");
+        System.out.println("VALOR DE CONFIRMAR: (" + confirmar + ")");
 
-        if (confirmar == 0){
+        if (confirmar == 0) {
             cacha login = new cacha();
             login.setVisible(true);
             this.setVisible(false);
@@ -4256,13 +4404,13 @@ boolean maximizado= false ;
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void btn_editarArticulo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarArticulo1ActionPerformed
-        int fila=tablaInventario.getRowCount();
-        for (int i = fila-1; i>0; i--){
+        int fila = tablaInventario.getRowCount();
+        for (int i = fila - 1; i > 0; i--) {
 
             dtm2.removeRow(i);
 
         }
-        if (dtm2.getRowCount()>0){
+        if (dtm2.getRowCount() > 0) {
             dtm2.removeRow(0);
         }
 
@@ -4272,29 +4420,28 @@ boolean maximizado= false ;
         String precio = ctrInicio.ListarPrecio();
         String cant = ctrInicio.ListarInventario();
         String[] filasProducto = producto.split(",");
-        for (int i = 0; i < filasProducto.length; i++){
+        for (int i = 0; i < filasProducto.length; i++) {
 
         }
         String[] filasId = id.split(",");
-        for (int i = 0; i < filasId.length; i++){
+        for (int i = 0; i < filasId.length; i++) {
 
         }
         String[] filasPlu = plu.split(",");
-        for (int i = 0; i < filasPlu.length; i++){
+        for (int i = 0; i < filasPlu.length; i++) {
 
         }
         String[] filasPrecio = precio.split(",");
-        for (int i = 0; i < filasPrecio.length; i++){
+        for (int i = 0; i < filasPrecio.length; i++) {
 
         }
 
         String[] filas = cant.split(",");
-        for (int i = 0; i < filas.length; i++){
+        for (int i = 0; i < filas.length; i++) {
 
             dtm2.addRow(new Object[]{
-                filasId[i],filasProducto[i],filasPrecio[i],filasPlu[i],filas[i]
+                filasId[i], filasProducto[i], filasPrecio[i], filasPlu[i], filas[i]
             });
-            
 
         }
     }//GEN-LAST:event_btn_editarArticulo1ActionPerformed
@@ -4310,11 +4457,11 @@ boolean maximizado= false ;
 
         String empleado = (String) comboBox_empleados.getSelectedItem();
         System.out.println(empleado);
-       
-        if (empleado.equals("")){
-            JOptionPane.showMessageDialog(this,"No ha seleccionado un empleado");
-        }else{
-            
+
+        if (empleado.equals("")) {
+            JOptionPane.showMessageDialog(this, "No ha seleccionado un empleado");
+        } else {
+
         }
     }//GEN-LAST:event_PagarQuincenaActionPerformed
 
@@ -4322,15 +4469,15 @@ boolean maximizado= false ;
         // DELETE FROM `empleados` WHERE cedula = 42656169
         try {
             // clsProducto empleadoAuxiliar = null;
-            clsEmpleado  empleadoAuxiliar = null;
+            clsEmpleado empleadoAuxiliar = null;
 
             String id = editId.getText();
-            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el empleado y no sera posible restaurarlo\n"+"¿Esta seguro?",//<- EL MENSAJE
-                "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el empleado y no sera posible restaurarlo\n" + "¿Esta seguro?",//<- EL MENSAJE
+                    "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
             //Si la respuesta es sí(YES_OPTION)
-            if (confirmar == 0){
+            if (confirmar == 0) {
                 empleadoAuxiliar = ctrEmpleado.Eliminar(id);
-                System.out.println("Resutado de empleado Auxiliar"+empleadoAuxiliar);
+                System.out.println("Resutado de empleado Auxiliar" + empleadoAuxiliar);
                 if (empleadoAuxiliar != null) {
                     JOptionPane.showMessageDialog(this, "Empleado eliminado");
 
@@ -4342,7 +4489,7 @@ boolean maximizado= false ;
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
         buscarempleado();
@@ -4354,18 +4501,16 @@ boolean maximizado= false ;
             clsEmpleado empleadoAuxiliar = null;
 
             String empleadoConsultado = (String) comboBox_empleados.getSelectedItem();
-            System.out.println("Este empleado es: "+ empleadoConsultado);
+            System.out.println("Este empleado es: " + empleadoConsultado);
             empleadoAuxiliar = ctrEmpleado.Consultar(empleadoConsultado);
 
             if (empleadoAuxiliar != null) {
-                
+
                 editId.setText(String.valueOf(empleadoAuxiliar.getId()));
-                
-                
-                jEliminarEmpleado.setText("¿ Deseo elimnar mi empleado: "+empleadoAuxiliar.getNombre()+" ?");
-                
+
+                jEliminarEmpleado.setText("¿ Deseo elimnar mi empleado: " + empleadoAuxiliar.getNombre() + " ?");
+
                 //cajas de textos a editar
-                
                 editCedula.setText(empleadoAuxiliar.getCedula());
                 editNombres.setText(empleadoAuxiliar.getNombre());
                 editTelefono.setText(empleadoAuxiliar.getTelefono());
@@ -4373,29 +4518,29 @@ boolean maximizado= false ;
                     tFijo1.setSelected(false);
                     tPS1.setSelected(false);
                     tIndef1.setSelected(true);
-                }else if (empleadoAuxiliar.getTipoContrato().equals("2")) {
+                } else if (empleadoAuxiliar.getTipoContrato().equals("2")) {
                     tFijo1.setSelected(true);
                     tPS1.setSelected(false);
                     tIndef1.setSelected(false);
-                }else if (empleadoAuxiliar.getTipoContrato().equals("3")) {
+                } else if (empleadoAuxiliar.getTipoContrato().equals("3")) {
                     tFijo1.setSelected(false);
                     tPS1.setSelected(true);
                     tIndef1.setSelected(false);
                 }
-            editCorreo.setText(empleadoAuxiliar.getCorreo());
-            editCargo.setText(empleadoAuxiliar.getCargo());
-            editBanco.setSelectedItem(empleadoAuxiliar.getBanco());
-            editSalario.setText(String.valueOf(empleadoAuxiliar.getValorquincena()));  
-            editCuenta.setText(empleadoAuxiliar.getCuentaCobro());
-            editFechaVinculacion.setText(empleadoAuxiliar.getFechaVinculacion());
-            editFechaFin.setText(empleadoAuxiliar.getFechaFinContrato());
-              
+                editCorreo.setText(empleadoAuxiliar.getCorreo());
+                editCargo.setText(empleadoAuxiliar.getCargo());
+                editBanco.setSelectedItem(empleadoAuxiliar.getBanco());
+                editSalario.setText(String.valueOf(empleadoAuxiliar.getValorquincena()));
+                editCuenta.setText(empleadoAuxiliar.getCuentaCobro());
+                editFechaVinculacion.setText(empleadoAuxiliar.getFechaVinculacion());
+                editFechaFin.setText(empleadoAuxiliar.getFechaFinContrato());
+
             } else {
                 JOptionPane.showMessageDialog(this, "Es posible que el empleado, no este registrado");
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_btnConsultar1ActionPerformed
@@ -4417,40 +4562,40 @@ boolean maximizado= false ;
     }//GEN-LAST:event_btn_registrarFKeyTyped
 
     private void btn_registrarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registrarFActionPerformed
-         try {
+        try {
 
             int totalFactura;
             int pago_cliente;
 
-            pago_cliente =Integer.parseInt(txt_cant_pago.getText());
-            totalFactura= Integer.parseInt(txt_totalApagar.getText());
+            pago_cliente = Integer.parseInt(txt_cant_pago.getText());
+            totalFactura = Integer.parseInt(txt_totalApagar.getText());
             int totalizado = totalFactura - pago_cliente;
-            if (pago_cliente < totalFactura){
-                JOptionPane.showMessageDialog(this, "Aun faltan "+totalizado+ " para pagar la factura");
+            if (pago_cliente < totalFactura) {
+                JOptionPane.showMessageDialog(this, "Aun faltan " + totalizado + " para pagar la factura");
 
-            }else{
+            } else {
                 int tpago = Integer.parseInt(txt_totalApagar.getText());
                 int cant_pago = Integer.parseInt(txt_cant_pago.getText());
-                int devuelta = cant_pago - tpago ;
+                int devuelta = cant_pago - tpago;
                 txt_devuelta.setText(String.valueOf(devuelta));
-                JOptionPane.showMessageDialog(this, "Devuelves: "+String.valueOf(devuelta));
+                JOptionPane.showMessageDialog(this, "Devuelves: " + String.valueOf(devuelta));
                 JOptionPane.showConfirmDialog(this, "Imprimir Facturar");
                 boolean estado;
-                String fecha=txt_fecha.getText();
+                String fecha = txt_fecha.getText();
                 String numero = numerofactura.getText();
                 String Ncliente = txt_NombreCliente.getText();
                 String cedula = clienteBuscado.getText();
                 int cajero = Integer.parseInt(cacha.usuario());
                 int id = 0;
                 int total = Integer.parseInt(txt_totalApagar.getText());
-                clsFactura factura = new clsFactura(id,fecha, numero, cedula,total, Ncliente, cajero);
-               estado = ctrInicio.GuardarFactura(factura);
-               // if (estado){
-                    //System.out.println(empleado.getNombre());
-                    crearDocumento();
-                    //UPDATE `productos` SET `cantidad`='24' WHERE plu="1072"
-               // }else{
-                    JOptionPane.showMessageDialog(this,"El objeto NO se agrego correctamente");
+                clsFactura factura = new clsFactura(id, fecha, numero, cedula, total, Ncliente, cajero);
+                estado = ctrInicio.GuardarFactura(factura);
+                // if (estado){
+                //System.out.println(empleado.getNombre());
+                crearDocumento();
+                //UPDATE `productos` SET `cantidad`='24' WHERE plu="1072"
+                // }else{
+                JOptionPane.showMessageDialog(this, "El objeto NO se agrego correctamente");
                 //}
 
             }
@@ -4461,20 +4606,20 @@ boolean maximizado= false ;
 
     private void btn_eliminarFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarFActionPerformed
         // TODO add your handling code here:}
-        int fila=tabla_productos.getSelectedRow();
-        if(fila>=0){
+        int fila = tabla_productos.getSelectedRow();
+        if (fila >= 0) {
             dtm.removeRow(fila);
             sumarTotal();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No ha seleccionado un producto de la factura");
         }
     }//GEN-LAST:event_btn_eliminarFActionPerformed
 
     private void txt_cant_pagoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cant_pagoKeyTyped
         // Ejecuta bnt_registrarF de forma auntomatica cuando ejecuto un ENTER
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
 
-        if (cTeclaPresionada == KeyEvent.VK_ENTER){
+        if (cTeclaPresionada == KeyEvent.VK_ENTER) {
             btn_registrarF.doClick();
         }
     }//GEN-LAST:event_txt_cant_pagoKeyTyped
@@ -4487,9 +4632,9 @@ boolean maximizado= false ;
         // TODO add your handling code here:ç
         double totalApagar = Double.parseDouble(txt_totalApagar.getText());
         try {
-            double totall = Double.parseDouble( txt_total.getText());
+            double totall = Double.parseDouble(txt_total.getText());
 
-            if(totall > 0){
+            if (totall > 0) {
                 agregarProd_tabla();
                 totalApagar = totalApagar + totall;
                 sumarTotal();
@@ -4498,12 +4643,12 @@ boolean maximizado= false ;
                 txt_precios.setText("");
                 txt_cantidad.setText("");
 
-            }else{
+            } else {
 
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"¡Es posible que tengas campos vacios o sin calcular!");
+            JOptionPane.showMessageDialog(this, "¡Es posible que tengas campos vacios o sin calcular!");
             System.out.println("Campos Vacios error  ");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -4511,20 +4656,20 @@ boolean maximizado= false ;
     private void btn_calcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_calcularActionPerformed
 
         try {
-            double cantidad = Double.parseDouble( txt_cantidad.getText().replace(",", "."));
+            double cantidad = Double.parseDouble(txt_cantidad.getText().replace(",", "."));
 
-            if(cantidad > 0){
-                int valorProducto = Integer.parseInt( txt_precios.getText());
+            if (cantidad > 0) {
+                int valorProducto = Integer.parseInt(txt_precios.getText());
                 double total = valorProducto * cantidad;
                 //convierto el valor total de entero a string para mostrarlo en la interfaz de usuario
                 String valoramostrar = String.valueOf(total);
                 txt_total.setText(valoramostrar);
-            }else{
+            } else {
                 System.out.println("Cantidad no esta asignada");
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_btn_calcularActionPerformed
@@ -4538,25 +4683,25 @@ boolean maximizado= false ;
     }//GEN-LAST:event_txt_preciosActionPerformed
 
     private void txt_cantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cantidadKeyTyped
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
 
-        if (cTeclaPresionada == KeyEvent.VK_ENTER){
+        if (cTeclaPresionada == KeyEvent.VK_ENTER) {
             btn_calcular.doClick();
         }
     }//GEN-LAST:event_txt_cantidadKeyTyped
 
     private void pluBuscadoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pluBuscadoKeyTyped
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
         try {
 
-            if (cTeclaPresionada == KeyEvent.VK_ENTER){
+            if (cTeclaPresionada == KeyEvent.VK_ENTER) {
                 btn_consulta.doClick();
-                if(f.equals("0")){
+                if (f.equals("0")) {
                     txt_cantidad.setText(JOptionPane.showInputDialog("Cantidad"));
                     btn_calcular.doClick();
                     int confirmar = JOptionPane.showConfirmDialog(null, "Desea Agregar a la Facttura",//<- EL MENSAJE
-                        "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
-                    if(confirmar == 0){
+                            "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+                    if (confirmar == 0) {
                         jButton1.doClick();
                     }
                 }
@@ -4585,7 +4730,7 @@ boolean maximizado= false ;
                 String detalles = empleadoAuxiliar.getDetalle();
 
                 txt_precios.setText(valo);
-                System.out.println("Este es el producto retornado "+ detalles);
+                System.out.println("Este es el producto retornado " + detalles);
                 txt_nameProd.setText(detalles);
                 f = "0";
 
@@ -4596,7 +4741,7 @@ boolean maximizado= false ;
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_btn_consultaActionPerformed
@@ -4606,9 +4751,9 @@ boolean maximizado= false ;
     }//GEN-LAST:event_txt_nameProdActionPerformed
 
     private void clienteBuscadoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_clienteBuscadoKeyTyped
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
 
-        if (cTeclaPresionada == KeyEvent.VK_ENTER){
+        if (cTeclaPresionada == KeyEvent.VK_ENTER) {
             btn_buscarcliente.doClick();
             pluBuscado.requestFocus();
         }
@@ -4634,7 +4779,7 @@ boolean maximizado= false ;
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_btn_buscarclienteActionPerformed
@@ -4652,30 +4797,29 @@ boolean maximizado= false ;
         txt_cant_pago.setText("");
         txt_devuelta.setText("0");
 
-
         String fechaActual = sdf.format(todayDate);
         txt_fecha.setText(fechaActual);
 
         String modelo = ctrInicio.ListarProducto();
         System.out.println(modelo);
         String[] filas = modelo.split(",");
-        for (int i = 0; i < filas.length; i++){
+        for (int i = 0; i < filas.length; i++) {
 
         }
 
         int ultima = ctrInicio.UltimaFactura();
         System.out.println(ultima);
-        ultima = ultima +1;
+        ultima = ultima + 1;
         numerofactura.setText(String.valueOf(ultima));
 
-        int fila=tabla_productos.getRowCount();
+        int fila = tabla_productos.getRowCount();
 
-        for (int i = fila-1; i>0; i--){
+        for (int i = fila - 1; i > 0; i--) {
 
             dtm.removeRow(i);
 
         }
-        if (dtm.getRowCount()>0){
+        if (dtm.getRowCount() > 0) {
             dtm.removeRow(0);
         }
     }//GEN-LAST:event_chekNuevaFacturaActionPerformed
@@ -4684,8 +4828,8 @@ boolean maximizado= false ;
         try {
             clsProducto productoAuxiliar = null;
 
-            String codigo =pCodigo.getText();
-            System.out.println("Objeto a buscar:: "+ codigo);
+            String codigo = pCodigo.getText();
+            System.out.println("Objeto a buscar:: " + codigo);
             productoAuxiliar = ctrProducto.Consultar(codigo);
 
             if (productoAuxiliar != null) {
@@ -4697,44 +4841,44 @@ boolean maximizado= false ;
                 pLote.setText(productoAuxiliar.getLote());
                 pRegistro.setText(productoAuxiliar.getFechaRegistro());
                 pVence.setText(productoAuxiliar.getFechaVencimiento());
-                System.out.println("registo:::"+productoAuxiliar.getFechaRegistro());
-                
+                System.out.println("registo:::" + productoAuxiliar.getFechaRegistro());
+
             } else {
                 JOptionPane.showMessageDialog(this, "Producto no encontrado");
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
-        
+
     }//GEN-LAST:event_buscarProductoActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         boolean estado;
         try {
-         
-            if(cProducto.isSelected()){
-            int id = 0;
-            String detalle = pNombre.getText();
-            String codigo = pPlu.getText();
-            int valorproducto =Integer.parseInt(pPrecio.getText());
-            String cantidad =pCantidad.getText();
-            String lote =pLote.getText();
-            String fechaRegistro =pRegistro.getText();
-            String fechaVencimiento =pVence.getText();
 
-            //Crear obteto
-            clsProducto producto = new clsProducto(id,detalle,  codigo, valorproducto, cantidad,lote, fechaRegistro, fechaVencimiento);
-            estado = ctrProducto.Crear(producto);
-                if (estado==true){
+            if (cProducto.isSelected()) {
+                int id = 0;
+                String detalle = pNombre.getText();
+                String codigo = pPlu.getText();
+                int valorproducto = Integer.parseInt(pPrecio.getText());
+                String cantidad = pCantidad.getText();
+                String lote = pLote.getText();
+                String fechaRegistro = pRegistro.getText();
+                String fechaVencimiento = pVence.getText();
+
+                //Crear obteto
+                clsProducto producto = new clsProducto(id, detalle, codigo, valorproducto, cantidad, lote, fechaRegistro, fechaVencimiento);
+                estado = ctrProducto.Crear(producto);
+                if (estado == true) {
                     //System.out.println(empleado.getNombre());
-                    JOptionPane.showMessageDialog(this,"Nuevo producto se agrego correctamente");
+                    JOptionPane.showMessageDialog(this, "Nuevo producto se agrego correctamente");
                     limpiaProveedor();
                     ActualizarLista();
 
-                }else{
-                    JOptionPane.showMessageDialog(this,"Error! Valide la informacion.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error! Valide la informacion.");
                 }
             }
         } catch (Exception e) {
@@ -4747,14 +4891,14 @@ boolean maximizado= false ;
             clsProducto productoAuxiliar = null;
 
             String id = pId.getText();
-            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el Proveedor y no sera posible restaurarlo\n"+"¿Esta seguro?",//<- EL MENSAJE
-                "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el Proveedor y no sera posible restaurarlo\n" + "¿Esta seguro?",//<- EL MENSAJE
+                    "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
             //Si la respuesta es sí(YES_OPTION)
-            if (confirmar == 0){
+            if (confirmar == 0) {
                 System.out.println("entro:::");
                 System.out.println(productoAuxiliar = ctrProducto.Eliminar(id));
                 if (productoAuxiliar != null) {
-                    
+
                     JOptionPane.showMessageDialog(this, "Datos eliminados");
                     limpiaProveedor();
                     ActualizarLista();
@@ -4765,32 +4909,32 @@ boolean maximizado= false ;
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_jButton19ActionPerformed
 
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
         try {
-          
+
             boolean estado;
             int id = Integer.parseInt(pCodigo.getText());
             String detalle = pNombre.getText();
             String plu = pPlu.getText();
-            int valorproducto =Integer.parseInt(pPrecio.getText());
-            String cantidad =pCantidad.getText();
-            String lote =pLote.getText();
-            String fechaVencimiento =pVence.getText();
-            String fechaRegistro =pRegistro.getText();
+            int valorproducto = Integer.parseInt(pPrecio.getText());
+            String cantidad = pCantidad.getText();
+            String lote = pLote.getText();
+            String fechaVencimiento = pVence.getText();
+            String fechaRegistro = pRegistro.getText();
 
             //Para acualizar obteto
-            clsProducto producto = new clsProducto(id,detalle,  plu, valorproducto, cantidad,lote, fechaRegistro, fechaVencimiento);
+            clsProducto producto = new clsProducto(id, detalle, plu, valorproducto, cantidad, lote, fechaRegistro, fechaVencimiento);
             estado = ctrProducto.Actualizar(producto);
-            if (estado){
+            if (estado) {
                 //System.out.println(empleado.getNombre());
-                JOptionPane.showMessageDialog(this,"El objeto se Actualizo correctamente");
-            }else{
-                JOptionPane.showMessageDialog(this,"ERROR");
+                JOptionPane.showMessageDialog(this, "El objeto se Actualizo correctamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "ERROR");
             }
         } catch (Exception e) {
         }
@@ -4798,9 +4942,9 @@ boolean maximizado= false ;
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         String code = pCodigo.getText();
-        if(code.equals("")){
+        if (code.equals("")) {
             pRegistro.setText(fecha);
-            
+
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -4808,7 +4952,7 @@ boolean maximizado= false ;
         try {
             clsEmpleado empleadoAuxiliar = null;
 
-            String cedula =eCodigo.getText();
+            String cedula = eCodigo.getText();
             empleadoAuxiliar = ctrEmpleado.Consultar(cedula);
 
             if (empleadoAuxiliar != null) {
@@ -4820,66 +4964,65 @@ boolean maximizado= false ;
                     tFijo.setSelected(false);
                     tPS.setSelected(false);
                     tIndef.setSelected(true);
-                }else if (empleadoAuxiliar.getTipoContrato().equals("2")) {
+                } else if (empleadoAuxiliar.getTipoContrato().equals("2")) {
                     tFijo.setSelected(true);
                     tPS.setSelected(false);
                     tIndef.setSelected(false);
-                }else if (empleadoAuxiliar.getTipoContrato().equals("3")) {
+                } else if (empleadoAuxiliar.getTipoContrato().equals("3")) {
                     tFijo.setSelected(false);
                     tPS.setSelected(true);
                     tIndef.setSelected(false);
                 }
-            eCorreo.setText(empleadoAuxiliar.getCorreo());
-            eCargo.setText(empleadoAuxiliar.getCargo());
-            eBanco.setSelectedItem(empleadoAuxiliar.getBanco());
-            eSalario.setText(String.valueOf(empleadoAuxiliar.getValorquincena()));  
-            eCuenta.setText(empleadoAuxiliar.getCuentaCobro());
-            eFechaVinculacion.setText(empleadoAuxiliar.getFechaVinculacion());
-            eFechaFin.setText(empleadoAuxiliar.getFechaFinContrato());
+                eCorreo.setText(empleadoAuxiliar.getCorreo());
+                eCargo.setText(empleadoAuxiliar.getCargo());
+                eBanco.setSelectedItem(empleadoAuxiliar.getBanco());
+                eSalario.setText(String.valueOf(empleadoAuxiliar.getValorquincena()));
+                eCuenta.setText(empleadoAuxiliar.getCuentaCobro());
+                eFechaVinculacion.setText(empleadoAuxiliar.getFechaVinculacion());
+                eFechaFin.setText(empleadoAuxiliar.getFechaFinContrato());
             } else {
                 JOptionPane.showMessageDialog(this, "Producto no encontrado");
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_buscarEmpleadoActionPerformed
 
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         boolean estado;
-        try {          
-            if(cEmpleado.isSelected()){
-            int id = 0;
-            String nombre = eNombres.getText();
-            String cedula = eCedula.getText();
-            String telefono =eTelefono.getText();
-            String cargo =eCargo.getText();
-            String correo =eCorreo.getText();
-            int valorquincena = Integer.parseInt(eSalario.getText());
-            String tipoContrato ="";
-            if(tIndef.isSelected()){
-                tipoContrato="1";
-            }else if(tFijo.isSelected()){
-                tipoContrato="2";
-            }else if(tPS.isSelected()){
-                tipoContrato="3";
-            }
-            String banco =(String )eBanco.getSelectedItem();
-            String cuentaCobro =eCuenta.getText();
-            String fechaVinculacion =eFechaVinculacion.getText();
-            String fechaFinContrato =eFechaFin.getText();
+        try {
+            if (cEmpleado.isSelected()) {
+                int id = 0;
+                String nombre = eNombres.getText();
+                String cedula = eCedula.getText();
+                String telefono = eTelefono.getText();
+                String cargo = eCargo.getText();
+                String correo = eCorreo.getText();
+                int valorquincena = Integer.parseInt(eSalario.getText());
+                String tipoContrato = "";
+                if (tIndef.isSelected()) {
+                    tipoContrato = "1";
+                } else if (tFijo.isSelected()) {
+                    tipoContrato = "2";
+                } else if (tPS.isSelected()) {
+                    tipoContrato = "3";
+                }
+                String banco = (String) eBanco.getSelectedItem();
+                String cuentaCobro = eCuenta.getText();
+                String fechaVinculacion = eFechaVinculacion.getText();
+                String fechaFinContrato = eFechaFin.getText();
 
-            //Crear obteto
-            clsEmpleado empleado = new clsEmpleado( id, nombre,cedula,telefono,cargo, valorquincena,tipoContrato,correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
-            estado = ctrEmpleado.Crear(empleado);
-                if (estado==true){
-                    
-                    JOptionPane.showMessageDialog(this,"Nuevo empleado se agrego correctamente");
-                    
+                //Crear obteto
+                clsEmpleado empleado = new clsEmpleado(id, nombre, cedula, telefono, cargo, valorquincena, tipoContrato, correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
+                estado = ctrEmpleado.Crear(empleado);
+                if (estado == true) {
 
-                }else{
-                    JOptionPane.showMessageDialog(this,"Error! Valide la informacion.");
+                    JOptionPane.showMessageDialog(this, "Nuevo empleado se agrego correctamente");
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error! Valide la informacion.");
                 }
             }
         } catch (Exception e) {
@@ -4891,10 +5034,10 @@ boolean maximizado= false ;
             clsEmpleado empleadoAuxiliar = null;
 
             String id = eId.getText();
-            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el Empleado y no sera posible restaurarlo\n"+"¿Esta seguro?",//<- EL MENSAJE
-                "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el Empleado y no sera posible restaurarlo\n" + "¿Esta seguro?",//<- EL MENSAJE
+                    "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
             //Si la respuesta es sí(YES_OPTION)
-            if (confirmar == 0){
+            if (confirmar == 0) {
                 empleadoAuxiliar = ctrEmpleado.Eliminar(id);
                 if (empleadoAuxiliar != null) {
                     JOptionPane.showMessageDialog(this, "Datos eliminados");
@@ -4907,7 +5050,7 @@ boolean maximizado= false ;
             }
 
         } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_jButton29ActionPerformed
@@ -4918,31 +5061,31 @@ boolean maximizado= false ;
             int id = Integer.parseInt(eId.getText());
             String nombre = eNombres.getText();
             String cedula = eCedula.getText();
-            String telefono =eTelefono.getText();
-            String cargo =eCargo.getText();
-            String correo =eCorreo.getText();
+            String telefono = eTelefono.getText();
+            String cargo = eCargo.getText();
+            String correo = eCorreo.getText();
             int valorquincena = Integer.parseInt(eSalario.getText());
-            String tipoContrato ="";
-            if(tIndef.isSelected()){
-                tipoContrato="1";
-            }else if(tFijo.isSelected()){
-                tipoContrato="2";
-            }else if(tPS.isSelected()){
-                tipoContrato="3";
+            String tipoContrato = "";
+            if (tIndef.isSelected()) {
+                tipoContrato = "1";
+            } else if (tFijo.isSelected()) {
+                tipoContrato = "2";
+            } else if (tPS.isSelected()) {
+                tipoContrato = "3";
             }
-            String banco =(String )eBanco.getSelectedItem();
-            String cuentaCobro =eCuenta.getText();
-            String fechaVinculacion =eFechaVinculacion.getText();
-            String fechaFinContrato =eFechaFin.getText();
+            String banco = (String) eBanco.getSelectedItem();
+            String cuentaCobro = eCuenta.getText();
+            String fechaVinculacion = eFechaVinculacion.getText();
+            String fechaFinContrato = eFechaFin.getText();
 
             //Para acualizar obteto
-             clsEmpleado empleado = new clsEmpleado( id, nombre,cedula,telefono,cargo, valorquincena,tipoContrato,correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
-             estado = ctrEmpleado.Actualizar(empleado);
-            if (estado){
+            clsEmpleado empleado = new clsEmpleado(id, nombre, cedula, telefono, cargo, valorquincena, tipoContrato, correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
+            estado = ctrEmpleado.Actualizar(empleado);
+            if (estado) {
                 //System.out.println(empleado.getNombre());
-                JOptionPane.showMessageDialog(this,"El objeto se Actualizo correctamente");
-            }else{
-                JOptionPane.showMessageDialog(this,"ERROR");
+                JOptionPane.showMessageDialog(this, "El objeto se Actualizo correctamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "ERROR");
             }
         } catch (HeadlessException | NumberFormatException e) {
         }
@@ -4952,7 +5095,7 @@ boolean maximizado= false ;
         try {
             clsCliente clienteAuxiliar = null;
 
-            String cedula =cBuscado.getText();
+            String cedula = cBuscado.getText();
             clienteAuxiliar = ctrCliente.Consultar(cedula);
 
             if (clienteAuxiliar != null) {
@@ -4972,7 +5115,7 @@ boolean maximizado= false ;
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_buscarClienteActionPerformed
@@ -4982,15 +5125,15 @@ boolean maximizado= false ;
             clsCliente clienteAuxiliar = null;
 
             String id = cId.getText();
-            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el cliente y no sera posible restaurarlo\n"+"¿Esta seguro?",//<- EL MENSAJE
-                "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+            int confirmar = JOptionPane.showConfirmDialog(null, "Al confirmar se eliminara el cliente y no sera posible restaurarlo\n" + "¿Esta seguro?",//<- EL MENSAJE
+                    "Alerta!"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
             //Si la respuesta es sí(YES_OPTION)
-            if (confirmar == 0){
+            if (confirmar == 0) {
                 clienteAuxiliar = ctrCliente.Eliminar(id);
                 if (clienteAuxiliar != null) {
                     JOptionPane.showMessageDialog(this, "Datos eliminados");
                     limpiarCliente();
-                    
+
                 } else {
 
                     JOptionPane.showMessageDialog(this, "Error valide la informacion.");
@@ -4998,7 +5141,7 @@ boolean maximizado= false ;
             }
 
         } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_jButton34ActionPerformed
@@ -5009,32 +5152,32 @@ boolean maximizado= false ;
             int id = Integer.parseInt(cId.getText());
             String nombre = cNombres.getText();
             String cedula = cCedula.getText();
-            String telefono =cTelefono.getText();
-            String celular =cCelular.getText();
-            String correo =cCorreo.getText();
+            String telefono = cTelefono.getText();
+            String celular = cCelular.getText();
+            String correo = cCorreo.getText();
             int facturas = Integer.parseInt(cFacturas.getText());
-           
-            String direccion =cDireccion.getText();
-            String fechaRegistro=cFechaRegistro.getText();
+
+            String direccion = cDireccion.getText();
+            String fechaRegistro = cFechaRegistro.getText();
 
             //Para acualizar obteto
-            clsCliente cliente = new clsCliente(id, nombre,  cedula,telefono, celular, direccion,facturas,correo,fechaRegistro);
+            clsCliente cliente = new clsCliente(id, nombre, cedula, telefono, celular, direccion, facturas, correo, fechaRegistro);
             estado = ctrCliente.Actualizar(cliente);
-            if (estado){
+            if (estado) {
                 //System.out.println(empleado.getNombre());
-                JOptionPane.showMessageDialog(this,"Datos Actualizados");
-            }else{
-                JOptionPane.showMessageDialog(this,"ERROR");
+                JOptionPane.showMessageDialog(this, "Datos Actualizados");
+            } else {
+                JOptionPane.showMessageDialog(this, "ERROR");
             }
         } catch (HeadlessException | NumberFormatException e) {
         }
     }//GEN-LAST:event_jButton35ActionPerformed
 
     private void pCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pCodigoKeyTyped
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
         try {
 
-            if (cTeclaPresionada == KeyEvent.VK_ENTER){
+            if (cTeclaPresionada == KeyEvent.VK_ENTER) {
                 buscarProducto.doClick();
             }
         } catch (Exception e) {
@@ -5042,10 +5185,10 @@ boolean maximizado= false ;
     }//GEN-LAST:event_pCodigoKeyTyped
 
     private void eCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eCodigoKeyTyped
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
         try {
 
-            if (cTeclaPresionada == KeyEvent.VK_ENTER){
+            if (cTeclaPresionada == KeyEvent.VK_ENTER) {
                 buscarEmpleado.doClick();
             }
         } catch (Exception e) {
@@ -5053,10 +5196,10 @@ boolean maximizado= false ;
     }//GEN-LAST:event_eCodigoKeyTyped
 
     private void pBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pBuscarKeyTyped
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
         try {
 
-            if (cTeclaPresionada == KeyEvent.VK_ENTER){
+            if (cTeclaPresionada == KeyEvent.VK_ENTER) {
                 buscarProveedor.doClick();
             }
         } catch (Exception e) {
@@ -5065,10 +5208,10 @@ boolean maximizado= false ;
 
     private void cBuscadoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cBuscadoKeyTyped
         // Este evento activa el boton buscar al dar enter
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
         try {
 
-            if (cTeclaPresionada == KeyEvent.VK_ENTER){
+            if (cTeclaPresionada == KeyEvent.VK_ENTER) {
                 buscarCliente.doClick();
             }
         } catch (Exception e) {
@@ -5081,16 +5224,16 @@ boolean maximizado= false ;
     }//GEN-LAST:event_formMousePressed
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
-        int x =evt.getXOnScreen();
-        int y =evt.getYOnScreen();
-        this.setLocation(x -xx, y -xy);
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xx, y - xy);
     }//GEN-LAST:event_formMouseDragged
 
     private void jEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEliminarEmpleadoActionPerformed
-        if(jEliminarEmpleado.isSelected()){
-        btnEliminarEmpleado.setEnabled(true);
-        }else{
-        btnEliminarEmpleado.setEnabled(false);
+        if (jEliminarEmpleado.isSelected()) {
+            btnEliminarEmpleado.setEnabled(true);
+        } else {
+            btnEliminarEmpleado.setEnabled(false);
         }
     }//GEN-LAST:event_jEliminarEmpleadoActionPerformed
 
@@ -5117,47 +5260,45 @@ boolean maximizado= false ;
             int id = Integer.parseInt(editId.getText());
             String nombre = editNombres.getText();
             String cedula = editCedula.getText();
-            String telefono =editTelefono.getText();
-            String cargo =editCargo.getText();
-            String correo =editCorreo.getText();
+            String telefono = editTelefono.getText();
+            String cargo = editCargo.getText();
+            String correo = editCorreo.getText();
             int valorquincena = Integer.parseInt(editSalario.getText());
-            String tipoContrato ="";
-            if(tIndef1.isSelected()){
-                tipoContrato="1";
-            }else if(tFijo1.isSelected()){
-                tipoContrato="2";
-            }else if(tPS1.isSelected()){
-                tipoContrato="3";
+            String tipoContrato = "";
+            if (tIndef1.isSelected()) {
+                tipoContrato = "1";
+            } else if (tFijo1.isSelected()) {
+                tipoContrato = "2";
+            } else if (tPS1.isSelected()) {
+                tipoContrato = "3";
             }
-            String banco =(String )editBanco.getSelectedItem();
-            String cuentaCobro =editCuenta.getText();
-            String fechaVinculacion =editFechaVinculacion.getText();
-            String fechaFinContrato =editFechaFin.getText();
+            String banco = (String) editBanco.getSelectedItem();
+            String cuentaCobro = editCuenta.getText();
+            String fechaVinculacion = editFechaVinculacion.getText();
+            String fechaFinContrato = editFechaFin.getText();
 
             //Para acualizar obteto
-             clsEmpleado empleado = new clsEmpleado( id, nombre,cedula,telefono,cargo, valorquincena,tipoContrato,correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
-             estado = ctrEmpleado.Actualizar(empleado);
-            if (estado){
+            clsEmpleado empleado = new clsEmpleado(id, nombre, cedula, telefono, cargo, valorquincena, tipoContrato, correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
+            estado = ctrEmpleado.Actualizar(empleado);
+            if (estado) {
                 //System.out.println(empleado.getNombre());
-                JOptionPane.showMessageDialog(this,"El objeto se Actualizo correctamente");
-            }else{
-                JOptionPane.showMessageDialog(this,"ERROR");
+                JOptionPane.showMessageDialog(this, "El objeto se Actualizo correctamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "ERROR");
             }
         } catch (HeadlessException | NumberFormatException e) {
         }
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-       panelApertura.setVisible(true);
-       panelRecogida.setVisible(false);
-       panelCierre.setVisible(false);
-       Administracion.setVisible(false);
-       String totalBase = ctrBases.totalBaseHoy();
-       totalBaseHoy.setText(totalBase);
-       
-       
-       
-        
+        panelApertura.setVisible(true);
+        panelRecogida.setVisible(false);
+        panelCierre.setVisible(false);
+        Administracion.setVisible(false);
+        String totalBase = ctrBases.totalBaseHoy();
+        totalBaseHoy.setText(totalBase);
+
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -5167,7 +5308,7 @@ boolean maximizado= false ;
         Administracion.setVisible(false);
         String ultimaRecogida = ctrRecogidas.NumeroRecogida();
         numeroUltimaRecogida.setText(ultimaRecogida);
-        
+
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -5175,9 +5316,9 @@ boolean maximizado= false ;
         panelRecogida.setVisible(false);
         panelCierre.setVisible(true);
         Administracion.setVisible(false);
-        new Thread(){
+        new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 valorTotalRecogidas = ctrRecogidas.ValorRecogidas();
                 valorTotalVentas = ctrInicio.TotalVenta();
                 Bases = Integer.parseInt(ctrBases.totalBaseHoy());
@@ -5186,17 +5327,17 @@ boolean maximizado= false ;
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        int fila=tablaCajaApertura.getRowCount();
+        int fila = tablaCajaApertura.getRowCount();
 
-        for (int i = fila-1; i>0; i--){
+        for (int i = fila - 1; i > 0; i--) {
 
             tabCaja.removeRow(i);
 
         }
-        if (tabCaja.getRowCount()>0){
+        if (tabCaja.getRowCount() > 0) {
             tabCaja.removeRow(0);
         }
-        base=0;
+        base = 0;
         valorInicial.setText(String.valueOf(base));
     }//GEN-LAST:event_jButton12ActionPerformed
 
@@ -5205,267 +5346,266 @@ boolean maximizado= false ;
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        
+
         String ultimaRecogida = ctrRecogidas.NumeroRecogida();
         try {
-            recogida= Integer.parseInt(JOptionPane.showInputDialog("Ingrese valor de la recojida"));
-            int actualRecogida = Integer.parseInt(ultimaRecogida)+1;
+            recogida = Integer.parseInt(JOptionPane.showInputDialog("Ingrese valor de la recojida"));
+            int actualRecogida = Integer.parseInt(ultimaRecogida) + 1;
             recogidaAregistrar.setText(String.valueOf(actualRecogida));
             valorNuevaRecogida.setText(String.valueOf(recogida));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error Valide Informacion");
         }
-        
+
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
-    try {
-                    String i =JOptionPane.showInputDialog("Ingrese monedas de 50");
-                    if(i.equals("")){
-                        i="0";
-                    }
-                    int c50 =Integer.parseInt(i);
-                    int cincuenta= 50*c50;
-                    tabCierre.addRow(new Object[]{
-                    "50",c50,cincuenta});
-                    
-                    String i2 =JOptionPane.showInputDialog("Ingrese monedas de 100");
-                    if(i2.equals("")){
-                        i2="0";
-                    }
-                    int c100=Integer.parseInt(i2);
-                    int cien = 100*c100;
-                    tabCierre.addRow(new Object[]{
-                    "100",c100,cien});
-                    
-                    String i3 =JOptionPane.showInputDialog("Ingrese monedas de 200");
-                    if(i3.equals("")){
-                        i3="0";
-                    }
-                    int c200=Integer.parseInt(i3);
-                    int doscientos = 200*c200;
-                    tabCierre.addRow(new Object[]{
-                    "200",c200,doscientos});
-                    
-                    String i4 =JOptionPane.showInputDialog("Ingrese monedas de 500");
-                    if(i4.equals("")){
-                        i4="0";
-                    }
-                    int c500=Integer.parseInt(i4);
-                    int quinientos = 500*c500;
-                    tabCierre.addRow(new Object[]{
-                    "500",c500,quinientos});
-                    
-                    String i5=JOptionPane.showInputDialog("Ingrese monedas de 1000");
-                    if(i5.equals("")){
-                        i5="0";
-                    }
-                    int c1000=Integer.parseInt(i5);
-                    int mil = 1000*c1000;
-                    tabCierre.addRow(new Object[]{
-                    "1000",c1000,mil});
-                    
-                    String i6=JOptionPane.showInputDialog("Ingrese billetes de 2000");
-                    if(i6.equals("")){
-                        i6="0";
-                    }
-                    int c2000=Integer.parseInt(i6);
-                    int dosmil = 2000*c2000;
-                    tabCierre.addRow(new Object[]{
-                    "2000",c2000,dosmil});
-                    
-                    String i7=JOptionPane.showInputDialog("Ingrese billetes de 5000");
-                    if(i7.equals("")){
-                        i7="0";
-                    }
-                    int c5000=Integer.parseInt(i7);
-                    int cincomil = 5000*c5000;
-                    tabCierre.addRow(new Object[]{
-                    "5000",c5000,cincomil});
-                    
-                    String i8 =JOptionPane.showInputDialog("Ingrese billetes de 10000");
-                    if(i8.equals("")){
-                        i8="0";
-                    }
-                    int c10000=Integer.parseInt(i8);
-                    int diezmil = 10000*c10000;
-                    tabCierre.addRow(new Object[]{
-                    "10000",c10000,diezmil});
-                    
-                    String i9 =JOptionPane.showInputDialog("Ingrese billetes de 20000");
-                    if(i9.equals("")){
-                        i9="0";
-                    }
-                    int c20000=Integer.parseInt(i9);
-                    int veintemil = 20000*c20000;
-                    tabCierre.addRow(new Object[]{
-                    "20000",c20000,veintemil});
-                    
-                    String i10 =JOptionPane.showInputDialog("Ingrese billetes de 50000");
-                    if(i10.equals("")){
-                        i10="0";
-                    }
-                    int c50000=Integer.parseInt(i10);
-                    int cincuentamil = 50000*c50000;
-                    tabCierre.addRow(new Object[]{
-                    "50000",c50000,cincuentamil});
-                    
-                    String i11=JOptionPane.showInputDialog("Ingrese billetes de 100000");
-                    if(i11.equals("")){
-                        i11="0";
-                    }
-                    int c100000=Integer.parseInt(i11);
-                    int cienmil = 100000*c100000;
-                    tabCierre.addRow(new Object[]{
-                    "100000",c100000,cienmil});
-                    
-                    conteoFinal = cincuenta+cien+doscientos+quinientos+mil+dosmil+cincomil+diezmil+veintemil+cincuentamil+cienmil;
-                    tCierre.setText(String.valueOf(conteoFinal));
+        try {
+            String i = JOptionPane.showInputDialog("Ingrese monedas de 50");
+            if (i.equals("")) {
+                i = "0";
+            }
+            int c50 = Integer.parseInt(i);
+            int cincuenta = 50 * c50;
+            tabCierre.addRow(new Object[]{
+                "50", c50, cincuenta});
 
-                } catch (Exception e) {
-                    System.out.println("valide los datos numericos");
-                    }
+            String i2 = JOptionPane.showInputDialog("Ingrese monedas de 100");
+            if (i2.equals("")) {
+                i2 = "0";
+            }
+            int c100 = Integer.parseInt(i2);
+            int cien = 100 * c100;
+            tabCierre.addRow(new Object[]{
+                "100", c100, cien});
+
+            String i3 = JOptionPane.showInputDialog("Ingrese monedas de 200");
+            if (i3.equals("")) {
+                i3 = "0";
+            }
+            int c200 = Integer.parseInt(i3);
+            int doscientos = 200 * c200;
+            tabCierre.addRow(new Object[]{
+                "200", c200, doscientos});
+
+            String i4 = JOptionPane.showInputDialog("Ingrese monedas de 500");
+            if (i4.equals("")) {
+                i4 = "0";
+            }
+            int c500 = Integer.parseInt(i4);
+            int quinientos = 500 * c500;
+            tabCierre.addRow(new Object[]{
+                "500", c500, quinientos});
+
+            String i5 = JOptionPane.showInputDialog("Ingrese monedas de 1000");
+            if (i5.equals("")) {
+                i5 = "0";
+            }
+            int c1000 = Integer.parseInt(i5);
+            int mil = 1000 * c1000;
+            tabCierre.addRow(new Object[]{
+                "1000", c1000, mil});
+
+            String i6 = JOptionPane.showInputDialog("Ingrese billetes de 2000");
+            if (i6.equals("")) {
+                i6 = "0";
+            }
+            int c2000 = Integer.parseInt(i6);
+            int dosmil = 2000 * c2000;
+            tabCierre.addRow(new Object[]{
+                "2000", c2000, dosmil});
+
+            String i7 = JOptionPane.showInputDialog("Ingrese billetes de 5000");
+            if (i7.equals("")) {
+                i7 = "0";
+            }
+            int c5000 = Integer.parseInt(i7);
+            int cincomil = 5000 * c5000;
+            tabCierre.addRow(new Object[]{
+                "5000", c5000, cincomil});
+
+            String i8 = JOptionPane.showInputDialog("Ingrese billetes de 10000");
+            if (i8.equals("")) {
+                i8 = "0";
+            }
+            int c10000 = Integer.parseInt(i8);
+            int diezmil = 10000 * c10000;
+            tabCierre.addRow(new Object[]{
+                "10000", c10000, diezmil});
+
+            String i9 = JOptionPane.showInputDialog("Ingrese billetes de 20000");
+            if (i9.equals("")) {
+                i9 = "0";
+            }
+            int c20000 = Integer.parseInt(i9);
+            int veintemil = 20000 * c20000;
+            tabCierre.addRow(new Object[]{
+                "20000", c20000, veintemil});
+
+            String i10 = JOptionPane.showInputDialog("Ingrese billetes de 50000");
+            if (i10.equals("")) {
+                i10 = "0";
+            }
+            int c50000 = Integer.parseInt(i10);
+            int cincuentamil = 50000 * c50000;
+            tabCierre.addRow(new Object[]{
+                "50000", c50000, cincuentamil});
+
+            String i11 = JOptionPane.showInputDialog("Ingrese billetes de 100000");
+            if (i11.equals("")) {
+                i11 = "0";
+            }
+            int c100000 = Integer.parseInt(i11);
+            int cienmil = 100000 * c100000;
+            tabCierre.addRow(new Object[]{
+                "100000", c100000, cienmil});
+
+            conteoFinal = cincuenta + cien + doscientos + quinientos + mil + dosmil + cincomil + diezmil + veintemil + cincuentamil + cienmil;
+            tCierre.setText(String.valueOf(conteoFinal));
+
+        } catch (Exception e) {
+            System.out.println("valide los datos numericos");
+        }
     }//GEN-LAST:event_jButton22ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         String passwordExample = "0";
-       valorInicial.setText("0");
-       
-       String password = JOptionPane.showInputDialog("Ingrese su contraseña");
-        
-        if (password.equals(passwordExample)){
+        valorInicial.setText("0");
+
+        String password = JOptionPane.showInputDialog("Ingrese su contraseña");
+
+        if (password.equals(passwordExample)) {
             int option = JOptionPane.showConfirmDialog(null, "Desea hacer conteo por denominacion.?",//<- EL MENSAJE
-                "Registrar Base"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
-            
-            if(option==0){
+                    "Registrar Base"/*<- El título de la ventana*/, JOptionPane.YES_NO_OPTION/*Las opciones (si o no)*/, JOptionPane.WARNING_MESSAGE/*El tipo de ventana, en este caso WARNING*/);
+
+            if (option == 0) {
                 try {
-                    String i =JOptionPane.showInputDialog("Ingrese monedas de 50");
-                    if(i.equals("")){
-                        i="0";
+                    String i = JOptionPane.showInputDialog("Ingrese monedas de 50");
+                    if (i.equals("")) {
+                        i = "0";
                     }
-                    int c50 =Integer.parseInt(i);
-                    int cincuenta= 50*c50;
+                    int c50 = Integer.parseInt(i);
+                    int cincuenta = 50 * c50;
                     tabCaja.addRow(new Object[]{
-                    "50",c50,cincuenta});
-                    
-                    String i2 =JOptionPane.showInputDialog("Ingrese monedas de 100");
-                    if(i2.equals("")){
-                        i2="0";
+                        "50", c50, cincuenta});
+
+                    String i2 = JOptionPane.showInputDialog("Ingrese monedas de 100");
+                    if (i2.equals("")) {
+                        i2 = "0";
                     }
-                    int c100=Integer.parseInt(i2);
-                    int cien = 100*c100;
+                    int c100 = Integer.parseInt(i2);
+                    int cien = 100 * c100;
                     tabCaja.addRow(new Object[]{
-                    "100",c100,cien});
-                    
-                    String i3 =JOptionPane.showInputDialog("Ingrese monedas de 200");
-                    if(i3.equals("")){
-                        i3="0";
+                        "100", c100, cien});
+
+                    String i3 = JOptionPane.showInputDialog("Ingrese monedas de 200");
+                    if (i3.equals("")) {
+                        i3 = "0";
                     }
-                    int c200=Integer.parseInt(i3);
-                    int doscientos = 200*c200;
+                    int c200 = Integer.parseInt(i3);
+                    int doscientos = 200 * c200;
                     tabCaja.addRow(new Object[]{
-                    "200",c200,doscientos});
-                    
-                    String i4 =JOptionPane.showInputDialog("Ingrese monedas de 500");
-                    if(i4.equals("")){
-                        i4="0";
+                        "200", c200, doscientos});
+
+                    String i4 = JOptionPane.showInputDialog("Ingrese monedas de 500");
+                    if (i4.equals("")) {
+                        i4 = "0";
                     }
-                    int c500=Integer.parseInt(i4);
-                    int quinientos = 500*c500;
+                    int c500 = Integer.parseInt(i4);
+                    int quinientos = 500 * c500;
                     tabCaja.addRow(new Object[]{
-                    "500",c500,quinientos});
-                    
-                    String i5=JOptionPane.showInputDialog("Ingrese monedas de 1000");
-                    if(i5.equals("")){
-                        i5="0";
+                        "500", c500, quinientos});
+
+                    String i5 = JOptionPane.showInputDialog("Ingrese monedas de 1000");
+                    if (i5.equals("")) {
+                        i5 = "0";
                     }
-                    int c1000=Integer.parseInt(i5);
-                    int mil = 1000*c1000;
+                    int c1000 = Integer.parseInt(i5);
+                    int mil = 1000 * c1000;
                     tabCaja.addRow(new Object[]{
-                    "1000",c1000,mil});
-                    
-                    String i6=JOptionPane.showInputDialog("Ingrese billetes de 2000");
-                    if(i6.equals("")){
-                        i6="0";
+                        "1000", c1000, mil});
+
+                    String i6 = JOptionPane.showInputDialog("Ingrese billetes de 2000");
+                    if (i6.equals("")) {
+                        i6 = "0";
                     }
-                    int c2000=Integer.parseInt(i6);
-                    int dosmil = 2000*c2000;
+                    int c2000 = Integer.parseInt(i6);
+                    int dosmil = 2000 * c2000;
                     tabCaja.addRow(new Object[]{
-                    "2000",c2000,dosmil});
-                    
-                    String i7=JOptionPane.showInputDialog("Ingrese billetes de 5000");
-                    if(i7.equals("")){
-                        i7="0";
+                        "2000", c2000, dosmil});
+
+                    String i7 = JOptionPane.showInputDialog("Ingrese billetes de 5000");
+                    if (i7.equals("")) {
+                        i7 = "0";
                     }
-                    int c5000=Integer.parseInt(i7);
-                    int cincomil = 5000*c5000;
+                    int c5000 = Integer.parseInt(i7);
+                    int cincomil = 5000 * c5000;
                     tabCaja.addRow(new Object[]{
-                    "5000",c5000,cincomil});
-                    
-                    String i8 =JOptionPane.showInputDialog("Ingrese billetes de 10000");
-                    if(i8.equals("")){
-                        i8="0";
+                        "5000", c5000, cincomil});
+
+                    String i8 = JOptionPane.showInputDialog("Ingrese billetes de 10000");
+                    if (i8.equals("")) {
+                        i8 = "0";
                     }
-                    int c10000=Integer.parseInt(i8);
-                    int diezmil = 10000*c10000;
+                    int c10000 = Integer.parseInt(i8);
+                    int diezmil = 10000 * c10000;
                     tabCaja.addRow(new Object[]{
-                    "10000",c10000,diezmil});
-                    
-                    String i9 =JOptionPane.showInputDialog("Ingrese billetes de 20000");
-                    if(i9.equals("")){
-                        i9="0";
+                        "10000", c10000, diezmil});
+
+                    String i9 = JOptionPane.showInputDialog("Ingrese billetes de 20000");
+                    if (i9.equals("")) {
+                        i9 = "0";
                     }
-                    int c20000=Integer.parseInt(i9);
-                    int veintemil = 20000*c20000;
+                    int c20000 = Integer.parseInt(i9);
+                    int veintemil = 20000 * c20000;
                     tabCaja.addRow(new Object[]{
-                    "20000",c20000,veintemil});
-                    
-                    String i10 =JOptionPane.showInputDialog("Ingrese billetes de 50000");
-                    if(i10.equals("")){
-                        i10="0";
+                        "20000", c20000, veintemil});
+
+                    String i10 = JOptionPane.showInputDialog("Ingrese billetes de 50000");
+                    if (i10.equals("")) {
+                        i10 = "0";
                     }
-                    int c50000=Integer.parseInt(i10);
-                    int cincuentamil = 50000*c50000;
+                    int c50000 = Integer.parseInt(i10);
+                    int cincuentamil = 50000 * c50000;
                     tabCaja.addRow(new Object[]{
-                    "50000",c50000,cincuentamil});
-                    
-                    String i11=JOptionPane.showInputDialog("Ingrese billetes de 100000");
-                    if(i11.equals("")){
-                        i11="0";
+                        "50000", c50000, cincuentamil});
+
+                    String i11 = JOptionPane.showInputDialog("Ingrese billetes de 100000");
+                    if (i11.equals("")) {
+                        i11 = "0";
                     }
-                    int c100000=Integer.parseInt(i11);
-                    int cienmil = 100000*c100000;
+                    int c100000 = Integer.parseInt(i11);
+                    int cienmil = 100000 * c100000;
                     tabCaja.addRow(new Object[]{
-                    "100000",c100000,cienmil});
-                    
-                    int baseAuxiliar = cincuenta+cien+doscientos+quinientos+mil+dosmil+cincomil+diezmil+veintemil+cincuentamil+cienmil;
-                    base+= baseAuxiliar;
+                        "100000", c100000, cienmil});
+
+                    int baseAuxiliar = cincuenta + cien + doscientos + quinientos + mil + dosmil + cincomil + diezmil + veintemil + cincuentamil + cienmil;
+                    base += baseAuxiliar;
 
                 } catch (Exception e) {
                     System.out.println("valide los datos numericos");
-                    }
-            }else if(option==1){
+                }
+            } else if (option == 1) {
                 try {
-                    String i1=JOptionPane.showInputDialog("Ingrese el Valor de su base inicial:");
-                    if(i1.equals("")){
-                        i1="0";
+                    String i1 = JOptionPane.showInputDialog("Ingrese el Valor de su base inicial:");
+                    if (i1.equals("")) {
+                        i1 = "0";
                     }
-                    int baseAuxiliar =Integer.parseInt(i1);
-                    
+                    int baseAuxiliar = Integer.parseInt(i1);
+
                     tabCaja.addRow(new Object[]{
-                    "Todas","No Aplica",baseAuxiliar});
-                    base+= baseAuxiliar;
+                        "Todas", "No Aplica", baseAuxiliar});
+                    base += baseAuxiliar;
                 } catch (Exception e) {
                 }
-                
-                
+
             }
-            JOptionPane.showMessageDialog(this, "Su base inicial es: "+String.valueOf(base));
+            JOptionPane.showMessageDialog(this, "Su base inicial es: " + String.valueOf(base));
             valorInicial.setText(String.valueOf(base));
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Contraseña Incorrecta");
             jButton5.doClick();
-            
+
         }
     }//GEN-LAST:event_jButton24ActionPerformed
 
@@ -5483,63 +5623,64 @@ boolean maximizado= false ;
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
         boolean estado;
-        try {          
-            if(base>0){
+        try {
+            if (base > 0) {
                 int id = 0;
                 int usuario = Integer.parseInt(cacha.usuario());
-                
+
                 int baseInicial = base;
-                int baseCierre= 0;
-                int cantidadRecogidas=0;
-                String horaApertura =hora;
-                String horaCierre =hora;
-                String fecha =fechaHoy.getText();
+                int baseCierre = 0;
+                int cantidadRecogidas = 0;
+                String horaApertura = hora;
+                String horaCierre =  dateFormat.format(date);
+                
+                String fecha = fechaHoy.getText();
 
                 //Crear obteto(int id,int usuario,int baseInicial, int baseCierre,int cantidadRecogidas,String horaApertura,String horaCierre,String fecha)
-                clsBases base = new clsBases(id, usuario,  baseInicial,baseCierre, cantidadRecogidas, horaApertura,horaCierre,fecha);
+                clsBases base = new clsBases(id, usuario, baseInicial, baseCierre, cantidadRecogidas, horaApertura, horaCierre, fecha);
                 estado = ctrBases.Crear(base);
-                
-                    if (estado==true){
 
-                        JOptionPane.showMessageDialog(this,"Agregaste una nueva base");
-                        limpiarCliente();
+                if (estado == true) {
 
-                    }else{
-                        JOptionPane.showMessageDialog(this,"Error! Valide la informacion.");
-                    }
+                    JOptionPane.showMessageDialog(this, "Agregaste una nueva base");
+                    limpiarCliente();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error! Valide la informacion.");
+                }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Error 500");
+            JOptionPane.showMessageDialog(this, "Error 500");
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void btnIniciar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciar2ActionPerformed
         boolean estado;
-        try {          
-            if(recogida>0){
+        try {
+            if (recogida > 0) {
                 int id = 0;
                 int usuario = Integer.parseInt(cacha.usuario());
-                
+
                 int valor = recogida;
-                String numeroRecogida =recogidaAregistrar.getText();
-                String horaRecogida =hora;
-                String fecha =fechaHoy.getText();
+                String numeroRecogida = recogidaAregistrar.getText();
+                String horaRecogida = "";
+                horaRecogida = dateFormat.format(date);
+                String fecha = fechaHoy.getText();
 
                 //Crear obteto(int id,int usuario,int baseInicial, int baseCierre,int cantidadRecogidas,String horaApertura,String horaCierre,String fecha)
-                clsRecogidas recogidas = new clsRecogidas(id, usuario,  valor,numeroRecogida, horaRecogida,fecha);
+                clsRecogidas recogidas = new clsRecogidas(id, usuario, valor, numeroRecogida, horaRecogida, fecha);
                 estado = ctrRecogidas.Crear(recogidas);
-                
-                    if (estado==true){
 
-                        JOptionPane.showMessageDialog(this,"Agregaste una nueva recogidad");
-                        
+                if (estado == true) {
 
-                    }else{
-                        JOptionPane.showMessageDialog(this,"Error! Valide la informacion.");
-                    }
+                    JOptionPane.showMessageDialog(this, "Agregaste una nueva recogidad");
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error! Valide la informacion.");
+                }
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Error 500");
+            JOptionPane.showMessageDialog(this, "Error 500");
         }
     }//GEN-LAST:event_btnIniciar2ActionPerformed
 
@@ -5549,25 +5690,25 @@ boolean maximizado= false ;
             int id = Integer.parseInt(editId1.getText());
             String nombre = editNombres1.getText();
             String cedula = editCedula1.getText();
-            String telefono =editTelefono1.getText();
-            String cargo =editCargo1.getText();
-            String correo =editCorreo1.getText();
+            String telefono = editTelefono1.getText();
+            String cargo = editCargo1.getText();
+            String correo = editCorreo1.getText();
             int valorquincena = Integer.parseInt(editSalario1.getText());
-            String tipoContrato =contrato.getText();
-            
-            String banco =(String )editBanco1.getSelectedItem();
-            String cuentaCobro =editCuenta1.getText();
-            String fechaVinculacion =editFechaVinculacion1.getText();
-            String fechaFinContrato =editFechaFin1.getText();
+            String tipoContrato = contrato.getText();
+
+            String banco = (String) editBanco1.getSelectedItem();
+            String cuentaCobro = editCuenta1.getText();
+            String fechaVinculacion = editFechaVinculacion1.getText();
+            String fechaFinContrato = editFechaFin1.getText();
 
             //Para acualizar obteto
-             clsEmpleado empleado = new clsEmpleado( id, nombre,cedula,telefono,cargo, valorquincena,tipoContrato,correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
-             estado = ctrEmpleado.Actualizar(empleado);
-            if (estado){
+            clsEmpleado empleado = new clsEmpleado(id, nombre, cedula, telefono, cargo, valorquincena, tipoContrato, correo, banco, cuentaCobro, fechaVinculacion, fechaFinContrato);
+            estado = ctrEmpleado.Actualizar(empleado);
+            if (estado) {
                 //System.out.println(empleado.getNombre());
-                JOptionPane.showMessageDialog(this,"El objeto se Actualizo correctamente");
-            }else{
-                JOptionPane.showMessageDialog(this,"ERROR");
+                JOptionPane.showMessageDialog(this, "El objeto se Actualizo correctamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "ERROR");
             }
         } catch (HeadlessException | NumberFormatException e) {
         }
@@ -5590,37 +5731,37 @@ boolean maximizado= false ;
 
     private void btnIniciar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciar1ActionPerformed
         boolean estado;
-        try {   
-                int id = 0;
-                int usuario = Integer.parseInt(cacha.usuario());
-                int positivo = valorTotalVentas+Bases;
-                int negativo = valorTotalRecogidas+conteoFinal;
-                int baseCierre = positivo-negativo;
-                valorCierre.setText(String.valueOf(baseCierre));
-                JOptionPane.showMessageDialog(this, "Valor Real En Gaveta: "+baseCierre);
-                int baseInicial = base;
-                int cantidadRecogidas=0;
-                String horaApertura =hora;
-                String horaCierre =hora;
-                String fecha =fechaHoy.getText();
+        try {
+            int id = 0;
+            int usuario = Integer.parseInt(cacha.usuario());
+            int positivo = valorTotalVentas + Bases;
+            int negativo = valorTotalRecogidas + conteoFinal;
+            int baseCierre = positivo - negativo;
+            valorCierre.setText(String.valueOf(baseCierre));
+            JOptionPane.showMessageDialog(this, "Valor Real En Gaveta: " + baseCierre);
+            int baseInicial = base;
+            int cantidadRecogidas = 0;
+            String horaApertura = dateFormat.format(date);
+            String horaCierre = dateFormat.format(date);
+            String fecha = fechaHoy.getText();
 
-                //Crear obteto(int id,int usuario,int baseInicial, int baseCierre,int cantidadRecogidas,String horaApertura,String horaCierre,String fecha)
-                clsBases cierre = new clsBases(id, usuario,  baseInicial,baseCierre, cantidadRecogidas, horaApertura,horaCierre,fecha);
-                estado = ctrBases.GenerarCierre(cierre);
-                
-                    if (estado==true){
+            //Crear obteto(int id,int usuario,int baseInicial, int baseCierre,int cantidadRecogidas,String horaApertura,String horaCierre,String fecha)
+            clsBases cierre = new clsBases(id, usuario, baseInicial, baseCierre, cantidadRecogidas, horaApertura, horaCierre, fecha);
+            estado = ctrBases.GenerarCierre(cierre);
 
-                        JOptionPane.showMessageDialog(this,"Agregaste un cierre");
-                        limpiarCliente();
+            if (estado == true) {
 
-                    }else{
-                        JOptionPane.showMessageDialog(this,"Error! Valide la informacion.");
-                    }
-            
+                JOptionPane.showMessageDialog(this, "Agregaste un cierre");
+                limpiarCliente();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Error! Valide la informacion.");
+            }
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Error 500");
+            JOptionPane.showMessageDialog(this, "Error 500");
         }
-        
+
     }//GEN-LAST:event_btnIniciar1ActionPerformed
 
     private void jButton40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton40ActionPerformed
@@ -5631,128 +5772,34 @@ boolean maximizado= false ;
             empleadoAuxiliar = ctrEmpleado.Consultar(cajeroConsultado);
 
             if (empleadoAuxiliar != null) {
-                
-               
-                
                 cedulaCajero.setText(empleadoAuxiliar.getCedula());
                 nameCajero.setText(empleadoAuxiliar.getNombre());
-               
+
             } else {
                 JOptionPane.showMessageDialog(this, "Es posible que el cajero, no este registrado");
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,"Hay Datos vacios o erroneos");
+            JOptionPane.showMessageDialog(this, "Hay Datos vacios o erroneos");
             System.out.println("Hay datos sin diligenciar o erroneos");
         }
     }//GEN-LAST:event_jButton40ActionPerformed
 
     private void jButton41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton41ActionPerformed
         try {
-        
-            String Accion  = (String) jComboAccion.getSelectedItem();
-            if (Accion.equals("Todo")){
-            }else if (Accion.equals("Bases")){
-                clsBasesAuxiliar resultadoAcion = null;
-                resultadoAcion= ctrBases.Consultar(fecha);
-                if (resultadoAcion != null) {
-                //cuenta filas de la tabla a vaciar
-                int fila=tHCaja.getRowCount();
-                for (int i = fila-1; i>0; i--){
 
-                    tabHcaja.removeRow(i);
-                }
-                if (tabHcaja.getRowCount()>0){
-                    tabHcaja.removeRow(0);
-                }
+            String Accion = (String) jComboAccion.getSelectedItem();
+            if (Accion.equals("Bases")) {
+                consultarBases();
+            } else if (Accion.equals("Cierre")) {
+                consultarCierre();
 
-                String id = resultadoAcion.getId();
-                String fecha = resultadoAcion.getFecha();
-                String hour = resultadoAcion.getHoraApertura();
-                String valor = resultadoAcion.getBaseInicial();
-                String cant = ctrInicio.ListarInventario();
-                String[] filasFecha = fecha.split(",");
-                for (int i = 0; i < filasFecha.length; i++){
-
-                }
-                String[] filasId = id.split(",");
-                for (int i = 0; i < filasId.length; i++){
-
-                }
-                String[] filasHora = hour.split(",");
-                for (int i = 0; i < filasHora.length; i++){
-
-                }
-                String[] filasValor = valor.split(",");
-                for (int i = 0; i < filasValor.length; i++){
-
-                }
-
-                String[] filasAutoriza = cant.split(",");
-                for (int i = 0; i < filasAutoriza.length; i++){
-
-                    tabHcaja.addRow(new Object[]{
-                        filasId[i],"Base",filasFecha[i],filasHora[i],filasValor[i],filasAutoriza[i]
-                    });
-
-
-                }
-
-                }
-            }else if (Accion.equals("Cierre")){
-                clsBasesAuxiliar resultadoAcion = null;
-                resultadoAcion= ctrBases.Consultar(fecha);
-                if (resultadoAcion != null) {
-                //cuenta filas de la tabla a vaciar
-                int fila=tHCaja.getRowCount();
-                for (int i = fila-1; i>0; i--){
-
-                    tabHcaja.removeRow(i);
-                }
-                if (tabHcaja.getRowCount()>0){
-                    tabHcaja.removeRow(0);
-                }
-
-                String id = resultadoAcion.getId();
-                String fecha = resultadoAcion.getFecha();
-                String hour = resultadoAcion.getHoraApertura();
-                String valor = resultadoAcion.getBaseInicial();
-                String cant = ctrInicio.ListarInventario();
-                String[] filasFecha = fecha.split(",");
-                for (int i = 0; i < filasFecha.length; i++){
-
-                }
-                String[] filasId = id.split(",");
-                for (int i = 0; i < filasId.length; i++){
-
-                }
-                String[] filasHora = hour.split(",");
-                for (int i = 0; i < filasHora.length; i++){
-
-                }
-                String[] filasValor = valor.split(",");
-                for (int i = 0; i < filasValor.length; i++){
-
-                }
-
-                String[] filasAutoriza = cant.split(",");
-                for (int i = 0; i < filasAutoriza.length; i++){
-
-                    tabHcaja.addRow(new Object[]{
-                        filasId[i],"Base",filasFecha[i],filasHora[i],filasValor[i],filasAutoriza[i]
-                    });
-
-
-                }
-
-                }
-
-            }else if (Accion.equals("Recogidas")){
-
-            }else{  
+            } else if (Accion.equals("Recogidas")) {
+                consultarRecogidas();
+            } else {
                 JOptionPane.showMessageDialog(this, "Seleccion no valida-");
             }
-            
+
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton41ActionPerformed
@@ -6107,14 +6154,17 @@ boolean maximizado= false ;
     private javax.swing.JTextField valorNuevaRecogida;
     // End of variables declaration//GEN-END:variables
 
-class fondoPanel extends JPanel{
+    class fondoPanel extends JPanel {
+
         private Image imagen;
+
         @Override
-        public void paint(Graphics g){
+        public void paint(Graphics g) {
             imagen = new ImageIcon(getClass().getResource("fondo.jpg")).getImage();
-            g.drawImage(imagen,0,0, getWidth(),getHeight(),this);
+            g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
             setOpaque(false);
             super.paint(g);
         }
-        
-    }}
+
+    }
+}
