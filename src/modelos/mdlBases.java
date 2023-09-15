@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import vistas.cacha;
+import vistas.init;
 
 /**
  *
@@ -29,7 +30,9 @@ public class mdlBases {
 
     private LinkedList<clsEmpleado> empleados = new LinkedList<clsEmpleado>();
     dbConnection dbConnection;
+    
     cacha cacha = new cacha();
+    
     
         //Constructor
     public mdlBases() {
@@ -41,12 +44,13 @@ public class mdlBases {
         try (Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
             System.out.println("Conexion exitosa ");
             //Generar insercion en tabla empleados
-            String query = "INSERT INTO `basecajero`( `usuario`, `baseinical`,`horaApertura`,`fecha`) VALUES (?,?,?,?)";
+            String query = "INSERT INTO `basecajero`( `usuario`, `baseinical`,`horaApertura`,`fecha`,`accion`) VALUES (?,?,?,?,?)";
             PreparedStatement  statementEmpleado = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             statementEmpleado.setInt(1,base.getUsuario()); 
             statementEmpleado.setInt(2,base.getBaseInicial()); 
             statementEmpleado.setString(3,base.getHoraApertura());
             statementEmpleado.setString(4,base.getFecha());
+            statementEmpleado.setString(5,"base");
             
             
             int filasModificadas = statementEmpleado.executeUpdate();
@@ -67,13 +71,13 @@ public class mdlBases {
         try (Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
             System.out.println("Conexion exitosa ");
             //Generar insercion en tabla empleados
-            String query = "INSERT INTO `basecajero`( `usuario`, `basecierre`,`horaCierre`,`fecha`) VALUES (?,?,?,?)";
+            String query = "INSERT INTO `basecajero`( `usuario`, `basecierre`,`horaCierre`,`fecha`,`accion`) VALUES (?,?,?,?,?)";
             PreparedStatement  statementEmpleado = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             statementEmpleado.setInt(1,cierre.getUsuario()); 
             statementEmpleado.setInt(2,cierre.getBaseCierre()); 
             statementEmpleado.setString(3,cierre.getHoraCierre());
             statementEmpleado.setString(4,cierre.getFecha());
-            
+            statementEmpleado.setString(5,"cierre");
             
             int filasModificadas = statementEmpleado.executeUpdate();
             if(filasModificadas > 0){
@@ -92,8 +96,7 @@ public class mdlBases {
    
     //
     
-    public clsBasesAuxiliar  Consultar(String fecha){
-        String usuario = cacha.usuario();
+    public clsBasesAuxiliar  Consultar(String user){
         String id="";
         String baseInicial = "";
         String  baseCierre = "";
@@ -101,8 +104,11 @@ public class mdlBases {
         String horaCierre = "";
         String apertura = "";
         String fecha2 = "";
+        init init = new init();
+        String fechaX = init.fechaB();
+        System.out.println("Operador=="+fechaX);
         try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
-            String query ="SELECT `id`, `baseinical`,  `cantidadrecojidas`, `horaApertura`,  `fecha` FROM `basecajero` WHERE baseinical != '' AND usuario = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
+            String query ="SELECT `id`, `baseinical`,  `cantidadrecojidas`, `horaApertura`,  `fecha` FROM `basecajero` WHERE accion = 'base' AND usuario = '"+user+"'"+"AND fecha = '"+fechaX+"'";
             //PreparedStatement statementPersona = connection.prepareStatement(query);
             
             //ResultSet resultado = statementPersona.executeQuery();
@@ -136,8 +142,8 @@ public class mdlBases {
             return null;
         }
     }
-    public clsBasesAuxiliar  ConsultarCierre(String fecha){
-        String usuario = cacha.usuario();
+    public clsBasesAuxiliar  ConsultarCierre(String user){
+        String fecha = init.fBus;
         String id="";
         String baseInicial = "";
         String  baseCierre = "";
@@ -146,7 +152,7 @@ public class mdlBases {
         String apertura = "";
         String fecha2 = "";
         try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
-            String query ="SELECT `id`,`basecierre`, `cantidadrecojidas`, `horaCierre`, `fecha` FROM `basecajero` WHERE basecierre = '0' or basecierre != '' AND  usuario = '"+usuario+"'"+"AND fecha = '"+fecha+"'";
+            String query ="SELECT `id`,`basecierre`, `cantidadrecojidas`, `horaCierre`, `fecha` FROM `basecajero` WHERE accion = 'cierre' AND  usuario = '"+user+"'"+"AND fecha = '"+fecha+"'";
             System.out.println(query);
             PreparedStatement statementEmpleado = connection.prepareStatement(query);
             ResultSet resultado = statementEmpleado.executeQuery();

@@ -77,12 +77,12 @@ public class ctrBases {
             
             }
     }
-     public clsBasesAuxiliar ConsultarCierre(String fecha){
+     public clsBasesAuxiliar ConsultarCierre(String user){
         
         try{
             
                 //Llamado a la capa modelos.Modelo
-                return mdlBases.ConsultarCierre(fecha);
+                return mdlBases.ConsultarCierre(user);
                
          }catch(Exception e ){
             System.out.println("La exepcion es:: "+ e); 

@@ -34,7 +34,7 @@ public class mdlEmpleado {
         try (Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
             System.out.println("Conexion exitosa ");
             //Generar insercion en tabla empleados
-            String query = "INSERT INTO `empleados`( `nombres`, `cedula`, `telefono`, `cargo`, `salario`, `tipoContrato`, `correo`, `banco`, `numeroCuenta`, `fechaVinculacion`, `finContrato`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO `empleados`( `nombres`, `cedula`, `telefono`, `cargo`, `salario`, `tipoContrato`, `correo`, `banco`, `numeroCuenta`, `fechaVinculacion`, `finContrato`,`estado`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement  statementEmpleado = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             statementEmpleado.setString(1,empleado.getNombre()); 
             statementEmpleado.setString(2,empleado.getCedula());
@@ -47,7 +47,7 @@ public class mdlEmpleado {
             statementEmpleado.setString(9,empleado.getCuentaCobro());
             statementEmpleado.setString(10,empleado.getFechaVinculacion());
             statementEmpleado.setString(11,empleado.getFechaFinContrato());
-            
+            statementEmpleado.setString(12,"activo");
             
             int filasModificadas = statementEmpleado.executeUpdate();
             if(filasModificadas > 0){
@@ -111,7 +111,7 @@ public class mdlEmpleado {
     }
     public clsEmpleado  Eliminar(String id){
         try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
-            String query ="DELETE FROM `empleados` WHERE id =? ";
+            String query ="UPDATE `empleados` SET `estado`='Null' WHERE id =? ";
             //int numero = Integer.parseInt(nit);
             PreparedStatement statementPersona = connection.prepareStatement(query);
           

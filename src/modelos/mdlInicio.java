@@ -164,7 +164,7 @@ public class mdlInicio {
         String Lista ="";
         
         try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
-            String query ="SELECT `cedula` FROM `empleados`";
+            String query ="SELECT `cedula` FROM `empleados` WHERE estado = 'activo'";
             PreparedStatement statementEmpleado = connection.prepareStatement(query);
             ResultSet resultado = statementEmpleado.executeQuery();
             while (resultado.next()){
