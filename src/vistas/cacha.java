@@ -17,33 +17,30 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
 /**
  *
  * @author OscarArb
  */
 public class cacha extends javax.swing.JFrame {
-        ctrLogeo ctrLogeo = new ctrLogeo();
-        ctrUsuario ctrUsuario = new ctrUsuario();
-         fondoPanel fondo = new fondoPanel();
-        
+
+    ctrLogeo ctrLogeo = new ctrLogeo();
+    ctrUsuario ctrUsuario = new ctrUsuario();
+    fondoPanel fondo = new fondoPanel();
+
     public cacha() {
         // this.setContentPane(fondo);
-        
+
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/multimedia/cacha.jpg")).getImage());
-        
-   
+
         this.setLocationRelativeTo(null);
-        place usuario= new place("Usuario", txt_user);
-        place contrasena  = new place("Password", txt_pass);
+        place usuario = new place("Usuario", txt_user);
+        place contrasena = new place("Password", txt_pass);
         txtCargando.setVisible(false);
-        
-        
-       
-        
+
     }
- public static String usuario= "";
+    public static String usuario = "";
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,76 +204,74 @@ public class cacha extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel5MousePressed
 
     private void jLabel5MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseDragged
-        int x =evt.getXOnScreen();
-        int y =evt.getYOnScreen();
-        this.setLocation(x -xx, y -xy);
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - xx, y - xy);
     }//GEN-LAST:event_jLabel5MouseDragged
 
     private void txt_passKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passKeyTyped
         // TODO add your handling code here:
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
 
-        if (cTeclaPresionada == KeyEvent.VK_ENTER){
+        if (cTeclaPresionada == KeyEvent.VK_ENTER) {
             btnIngresar.doClick();
         }
     }//GEN-LAST:event_txt_passKeyTyped
-   
-    void logeo(){
+
+    void logeo() {
         titulo = txt_user.getText();
-        
+
         String usuario = txt_user.getText();
         String clave = txt_pass.getText();
-        if (usuario.equals("") || clave.equals("")){
-            
+        if (usuario.equals("") || clave.equals("")) {
+
             txtCargando.setVisible(false);
-            JOptionPane.showMessageDialog(this,"Campos vacios *");
+            JOptionPane.showMessageDialog(this, "Campos vacios *");
 
             txt_user.setText("");
             txt_pass.setText("");
-            
-        }else{
-            
+
+        } else {
+
             try {
-                
+
                 clsLogeo empleadoAuxiliar = null;
                 empleadoAuxiliar = ctrLogeo.logeo(usuario);
                 clsUsuario usuario2 = null;
                 usuario2 = ctrUsuario.Consultar(usuario);
 
                 if (empleadoAuxiliar != null) {
-                    String usr =empleadoAuxiliar.getUsuario();
-                    String clv =empleadoAuxiliar.getClave();
-                    if (usr.equals(usuario) && clv.equals(clave)){
+                    String usr = empleadoAuxiliar.getUsuario();
+                    String clv = empleadoAuxiliar.getClave();
+                    if (usr.equals(usuario) && clv.equals(clave)) {
 
                         //init init = new init();
                         //init.setVisible(true);
                         //this.setVisible(false);
                         System.out.println("Logeado Correctamente");
-                        if(usuario2.getAdministrador().equals("si")){
+                        if (usuario2.getAdministrador().equals("si")) {
 
                             init init = new init();
                             init.setVisible(true);
                             this.setVisible(false);
-                        }else if(usuario2.getCajero().equals("si")){
+                        } else if (usuario2.getCajero().equals("si")) {
                             initCajero initCajero = new initCajero();
                             initCajero.setVisible(true);
                             this.setVisible(false);
 
-                        }else{
+                        } else {
                             System.out.println("Empleado");
                             initEmpleado initEmpleado = new initEmpleado();
                             initEmpleado.setVisible(true);
                             this.setVisible(false);
 
-                        }   
-                    }else if(usr != usuario || clv != clave){
-                        JOptionPane.showMessageDialog(this,"Usuario o contraseña invalidos");
+                        }
+                    } else if (usr != usuario || clv != clave) {
+                        JOptionPane.showMessageDialog(this, "Usuario o contraseña invalidos");
                         txt_user.setText("");
                         txt_pass.setText("");
                         System.out.println(empleadoAuxiliar);
-                    }
-                    else{
-                        
+                    } else {
 
                     }
 
@@ -287,29 +282,28 @@ public class cacha extends javax.swing.JFrame {
                 }
 
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this,"Error 500");
+                JOptionPane.showMessageDialog(this, "Error 500");
                 System.out.println("Error 500 'Es posible que no tengas conexion'");
             }
         }
     }
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        new Thread(){
+        new Thread() {
             @Override
-            public void run(){
-              txtCargando.setVisible(true);
-              logeo();
-              txtCargando.setVisible(false);
+            public void run() {
+                txtCargando.setVisible(true);
+                logeo();
+                txtCargando.setVisible(false);
             }
         }.start();
-       
-        
+
 
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void txt_userKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_userKeyTyped
-        char cTeclaPresionada=evt.getKeyChar();
+        char cTeclaPresionada = evt.getKeyChar();
 
-        if (cTeclaPresionada == KeyEvent.VK_ENTER){
+        if (cTeclaPresionada == KeyEvent.VK_ENTER) {
             btnIngresar.doClick();
         }
     }//GEN-LAST:event_txt_userKeyTyped
@@ -323,17 +317,23 @@ public class cacha extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
-        
+
     }//GEN-LAST:event_btnIngresarMouseClicked
 
     private void txt_passMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_passMouseClicked
         System.out.println("Se va a empezar a escribir aqui");
     }//GEN-LAST:event_txt_passMouseClicked
- public static String titulo ="";public  String usuario(){
-    System.out.println(titulo);
-     return titulo;
-}int xx,xy; 
-    /**s
+    public static String titulo = "";
+
+    public String usuario() {
+        System.out.println(titulo);
+        return titulo;
+    }
+    int xx, xy;
+
+    /**
+     * s
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -384,16 +384,17 @@ public class cacha extends javax.swing.JFrame {
     private javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
 
-class fondoPanel extends JPanel{
+    class fondoPanel extends JPanel {
+
         private Image imagen;
+
         @Override
-        public void paint(Graphics g){
+        public void paint(Graphics g) {
             imagen = new ImageIcon(getClass().getResource("fondo.jpg")).getImage();
-            g.drawImage(imagen,0,0, getWidth(),getHeight(),this);
+            g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
             setOpaque(false);
             super.paint(g);
         }
-        
+
     }
 }
-

@@ -74,11 +74,8 @@ public class mdlCliente {
         try(Connection connection = DriverManager.getConnection(dbConnection.getUrl(),dbConnection.getUser(),dbConnection.getPass())){
             String query ="SELECT * FROM `clientes`  WHERE cedula =? OR id = ?";
             PreparedStatement statementPersona = connection.prepareStatement(query);
-            
-            
             statementPersona.setString(1, cedula);
             statementPersona.setString(2, cedula);
-           
             ResultSet resultado = statementPersona.executeQuery();
             while (resultado.next()){
                 int id = resultado.getInt(1);
@@ -90,9 +87,6 @@ public class mdlCliente {
                 int facturas = resultado.getInt(7);
                 String correo = resultado.getString(8);
                 String fechaRegistro = resultado.getString(9);
-                
-              
-      
                 clsCliente cliente = new clsCliente(id, nombre,  cedul,telefono, celular, direccion,facturas,correo,fechaRegistro);
               //  System.out.println("Se encontro el producto"+valorproducto+"  "+detalle+"  "+fechaRegistro);
                 return cliente;

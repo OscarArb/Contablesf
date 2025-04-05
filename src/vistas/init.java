@@ -314,6 +314,7 @@ public class init extends javax.swing.JFrame {
 
    
 
+    
     void agregarProd_tabla() {
         dtm.addRow(new Object[]{
             txt_cantidad.getText(), txt_nameProd.getText(), txt_precios.getText(), txt_total.getText()
@@ -559,8 +560,9 @@ public class init extends javax.swing.JFrame {
     void sumarTotal() {
         int fila = 0;
         int total = 0;
+        
         for (int i = 0; i < dtm.getRowCount(); i++) {
-            fila = (int) Double.parseDouble(dtm.getValueAt(i, 3).toString());
+            fila = (int) Double.parseDouble(dtm.getValueAt(i, 2).toString());
             total += fila;
 
         }
